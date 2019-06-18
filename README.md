@@ -1,2 +1,2 @@
-# This is 42devops blog
+# 42devops blog
 
