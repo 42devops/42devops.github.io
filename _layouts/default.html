@@ -24,14 +24,22 @@
         Typekit.load();
       } catch (e) {}
     </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-142392073-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-142392073-1");
+    </script>
   </head>
   <body>
-    <!-- ClickTale Top part -->
-    <script type="text/javascript">
-      var WRInitTime = new Date().getTime();
-    </script>
-    <!-- ClickTale end of Top part -->
-
     <div class="site">
       <div class="title">
         <a href="/">42Devops</a>
