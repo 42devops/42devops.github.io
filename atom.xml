@@ -4,10 +4,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>om Preston-WernerT</title>
- <link href="http://42devops.live/atom.xml" rel="self"/>
- <link href="http://42devops.live/"/>
+ <link href="http://42devops.com/atom.xml" rel="self"/>
+ <link href="http://42devops.com/"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
- <id>http://42devops.live/</id>
+ <id>http://42devops.com/</id>
  <author>
    <name>Xiangxu</name>
    <email></email>
@@ -16,9 +16,9 @@
  {% for post in site.posts %}
  <entry>
    <title>{{ post.title }}</title>
-   <link href="http://42devops.live{{ post.url }}"/>
+   <link href="http://42devops.com{{ post.url }}"/>
    <updated>{{ post.date | date_to_xmlschema }}</updated>
-   <id>http://42devops.live{{ post.id }}</id>
+   <id>http://42devops.com{{ post.id }}</id>
    <content type="html">{{ post.content | xml_escape }}</content>
  </entry>
  {% endfor %}
