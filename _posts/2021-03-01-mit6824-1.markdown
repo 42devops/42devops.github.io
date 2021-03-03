@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "6.824 分布式系统 - Mapreduce"
-date: 2019-06-18 11:45:19 +0800
+date: 2021-0301 11:45:19 +0800
 categories: mit6824
 comments: true
 ---
