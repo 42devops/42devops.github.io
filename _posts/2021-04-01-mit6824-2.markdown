@@ -1,12 +1,11 @@
 ---
 layout: post
-title: "6.824 分布式系统 01 - Mapreduce"
-date: 2021-03-01 11:45:19 +0800
+title: "6.824 分布式系统 02 - GFS"
+date: 2021-04-01 11:45:19 +0800
 categories: mit6824
 comments: true
 ---
-# 6.824 分布式系统 01 - Mapreduce
-> 如果可以用单机解决, 你应该避免使用 分布式系统,因为分布式系统不简单
+# 6.824 分布式系统 02 - GFS
 
 # 为什么要使用分布式系统
 1. parallelism  并行
