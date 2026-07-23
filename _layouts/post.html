@@ -2,28 +2,87 @@
 layout: default
 ---
 
-<div id="post">
-  {{ content }}
-</div>
+<article class="post-detail">
+  <header class="post-header">
+    <div style="margin-bottom: 1rem;">
+      <a href="/" style="text-decoration: none; color: var(--text-muted); font-size: 0.875rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
+        &larr; Back to articles
+      </a>
+    </div>
 
-<div id="related">
-  <h2>Related Posts</h2>
-  <ul class="posts">
+    <h1 class="post-title">{{ page.title }}</h1>
+
+    <div class="post-meta-bar">
+      {% if page.date %}
+      <time datetime="{{ page.date | date_to_xmlschema }}" style="font-family: var(--font-mono); font-weight: 500;">
+        📅 {{ page.date | date: "%b %d, %Y" }}
+      </time>
+      {% endif %}
+
+      {% if page.categories %}
+      <div style="display: flex; gap: 0.4rem; align-items: center;">
+        🏷️
+        {% for category in page.categories %}
+          <span class="tag-badge">{{ category }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Reading time estimate -->
+      <span style="font-family: var(--font-mono); font-size: 0.825rem; color: var(--text-light);">
+        ⏱️ {% assign words = content | number_of_words %}
+        {% if words < 360 %}
+          1 min read
+        {% else %}
+          {{ words | divided_by: 180 }} mins read
+        {% endif %}
+      </span>
+    </div>
+  </header>
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+</article>
+
+{% if site.related_posts.size > 0 %}
+<section style="margin-top: 3rem; margin-bottom: 2.5rem;">
+  <div class="section-header">
+    <h2 class="section-title">
+      <span class="ann ann-n ann-blue" data-note="Read next">Related Articles</span>
+    </h2>
+  </div>
+
+  <div class="posts-grid">
     {% for post in site.related_posts limit:3 %}
-    <li>
-      <span>{{ post.date | date_to_string }}</span> &raquo;
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
+    <a href="{{ post.url }}" class="post-card">
+      <div class="post-card-header">
+        <h3 class="post-card-title">{{ post.title }}</h3>
+        <span class="post-card-meta">{{ post.date | date: "%b %d, %Y" }}</span>
+      </div>
+      {% if post.categories %}
+      <div style="margin-top: 0.5rem; display: flex; gap: 0.35rem;">
+        {% for cat in post.categories %}
+        <span class="tag-badge">{{ cat }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </a>
     {% endfor %}
-  </ul>
-</div>
+  </div>
+</section>
+{% endif %}
+
 {% if page.comments %}
-<script src="https://utteranc.es/client.js"
-        repo="42devops/42devops.github.io"
-        issue-term="pathname"
-        label="✨💬✨"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
+<div style="margin-top: 2.5rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem;">
+  <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-main);">Comments</h3>
+  <script src="https://utteranc.es/client.js"
+          repo="42devops/42devops.github.io"
+          issue-term="pathname"
+          label="✨💬✨"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+  </script>
+</div>
 {% endif %}

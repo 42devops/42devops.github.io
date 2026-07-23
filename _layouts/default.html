@@ -1,67 +1,154 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<html lang="en" data-theme="light">
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
-    <title>{{ page.title }}</title>
-    <meta name="author" content="42Devops" />
+    <title>{% if page.title %}{{ page.title }} | 42DevOps{% else %}42DevOps - Infrastructure & Engineering Notes{% endif %}</title>
+    <meta name="description" content="Engineering thoughts on DevOps, Kubernetes, Infrastructure, and Algorithms." />
+    <meta name="author" content="42DevOps" />
 
-    <!-- syntax highlighting CSS -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Shantell+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/neat-annotations.css" type="text/css" />
     <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+    <link rel="stylesheet" href="/css/screen.css" type="text/css" />
 
-    <!-- Homepage CSS -->
-    <link
-      rel="stylesheet"
-      href="/css/screen.css"
-      type="text/css"
-      media="screen, projection"
-    />
+    <!-- KaTeX CSS & JS for Math equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+            onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
 
-    <!-- Typekit -->
-    <script type="text/javascript" src="/js/jpd0pfm.js"></script>
-    <script type="text/javascript">
-      try {
-        Typekit.load();
-      } catch (e) {}
+    <!-- Theme Initialization Script (Avoid Flash of Unstyled Theme) -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('42devops-theme');
+        if (savedTheme) {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.setAttribute('data-theme', darkTheme = 'dark');
+        }
+      })();
     </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=UA-142392073-1"
-    ></script>
+
+    <!-- Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142392073-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+      function gtag() { dataLayer.push(arguments); }
       gtag("js", new Date());
-
       gtag("config", "UA-142392073-1");
     </script>
   </head>
   <body>
     <div class="site">
-      <div class="title">
-        <a href="/">42Devops</a>
-        <a class="extra" href="/">home</a>
-      </div>
-
-      {{ content }}
-
-      <div class="footer">
-        <div class="contact">
-          <p>
-            42Devops
-            <br />
-          </p>
+      <header class="site-header">
+        <div class="brand-wrapper">
+          <a href="/" class="brand-logo">
+            <span class="brand-mark">42</span>
+            <span>DevOps</span>
+          </a>
         </div>
-        <div class="contact">
-          <p>
-            <a href="http://42devops.com">42devops.com</a><br />
-          </p>
+        
+        <nav style="display: flex; align-items: center; gap: 1.25rem;">
+          <ul class="nav-links">
+            <li><a href="/">Blog</a></li>
+            <li><a href="/#projects">Projects</a></li>
+            <li><a href="https://github.com/42devops" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+
+          <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
+            <span id="theme-icon">🌙</span>
+            <span id="theme-label" style="font-size: 0.8rem; font-weight: 600;">Dark</span>
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        {{ content }}
+      </main>
+
+      <footer class="site-footer">
+        <div>
+          &copy; {{ "now" | date: "%Y" }} <strong>42DevOps</strong>. Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> &amp; GitHub Pages.
         </div>
-        <div class="rss"></div>
-      </div>
+        <div class="footer-links">
+          <a href="/atom.xml">RSS Feed</a>
+          <a href="https://42devops.com">42devops.com</a>
+        </div>
+      </footer>
     </div>
+
+    <!-- Interactive Scripts: Theme Toggle & Code Block Copy -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Theme Switcher Logic
+        const toggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeLabel = document.getElementById('theme-label');
+
+        function updateThemeUI(theme) {
+          if (theme === 'dark') {
+            themeIcon.textContent = '☀️';
+            themeLabel.textContent = 'Light';
+          } else {
+            themeIcon.textContent = '🌙';
+            themeLabel.textContent = 'Dark';
+          }
+        }
+
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        updateThemeUI(currentTheme);
+
+        toggleBtn.addEventListener('click', function() {
+          const activeTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = activeTheme === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('42devops-theme', newTheme);
+          updateThemeUI(newTheme);
+        });
+
+        // Code Block Enhancement: Wrap with Header & Copy Button
+        const highlightBlocks = document.querySelectorAll('.highlight, pre:not(.highlight pre)');
+        highlightBlocks.forEach(function(block) {
+          // Avoid double wrapping
+          if (block.closest('.code-wrapper')) return;
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'code-wrapper';
+
+          const header = document.createElement('div');
+          header.className = 'code-header';
+
+          const dots = document.createElement('div');
+          dots.className = 'code-dots';
+          dots.innerHTML = '<span class="code-dot code-dot-red"></span><span class="code-dot code-dot-yellow"></span><span class="code-dot code-dot-green"></span>';
+
+          const copyBtn = document.createElement('button');
+          copyBtn.className = 'copy-btn';
+          copyBtn.textContent = 'Copy';
+
+          copyBtn.addEventListener('click', function() {
+            const codeText = block.querySelector('code') ? block.querySelector('code').innerText : block.innerText;
+            navigator.clipboard.writeText(codeText).then(function() {
+              copyBtn.textContent = 'Copied!';
+              setTimeout(function() { copyBtn.textContent = 'Copy'; }, 2000);
+            });
+          });
+
+          header.appendChild(dots);
+          header.appendChild(copyBtn);
+
+          block.parentNode.insertBefore(wrapper, block);
+          wrapper.appendChild(header);
+          wrapper.appendChild(block);
+        });
+      });
+    </script>
   </body>
 </html>

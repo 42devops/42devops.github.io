@@ -1,46 +1,120 @@
 ---
 layout: default
-title: 42DevOps
+title: "42DevOps | Infrastructure & Engineering Notes"
 ---
 
-<div id="home">
-  <h1>Blog Posts</h1>
-  <ul class="posts">
+<section class="hero-banner">
+  <h1 class="hero-title">
+    DevOps, Infrastructure <br/>
+    &amp; <span class="ann ann-n ann-amber" data-note="The Ultimate Answer">42</span> Engineering Notes
+  </h1>
+  <p class="hero-subtitle">
+    Exploring <span class="ann ann-s ann-blue" data-note="Cloud Native">Kubernetes</span>, automation, <span class="ann ann-nw ann-purple" data-note="System Design">Infrastructure</span>, and algorithms.
+  </p>
+</section>
+
+<section id="articles" style="margin-bottom: 3.5rem;">
+  <div class="section-header">
+    <h2 class="section-title">
+      <span class="ann ann-n ann-green" data-note="Latest Posts">Articles</span>
+    </h2>
+  </div>
+
+  <div class="filter-bar" id="category-filters">
+    <button class="filter-pill active" data-filter="all">All Posts</button>
+    <button class="filter-pill" data-filter="hello">Update</button>
+    <button class="filter-pill" data-filter="misc">Misc</button>
+  </div>
+
+  <div class="posts-grid" id="posts-container">
     {% for post in site.posts %}
-    <li>
-      <span>{{ post.date | date_to_string }}</span> &raquo;
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
+    <a href="{{ post.url }}" class="post-card" data-categories="{% if post.categories %}{{ post.categories | join: ' ' | downcase }}{% endif %}">
+      <div class="post-card-header">
+        <h3 class="post-card-title">{{ post.title }}</h3>
+        <span class="post-card-meta">
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
+        </span>
+      </div>
+
+      {% if post.excerpt %}
+      <div class="post-card-snippet">
+        {{ post.excerpt | strip_html | truncatewords: 24 }}
+      </div>
+      {% endif %}
+
+      {% if post.categories %}
+      <div style="margin-top: 0.75rem; display: flex; gap: 0.35rem; flex-wrap: wrap;">
+        {% for category in post.categories %}
+        <span class="tag-badge">{{ category }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </a>
     {% endfor %}
-  </ul>
+  </div>
+</section>
 
-  <!-- <h1>Highlighted Media</h1>
-	<ul class="posts">
-		<li>
-			<span>02 Sep 2013</span> &raquo;
-			<a href="https://www.wired.com/2013/09/github-for-anything/"
-				>Article: WIRED - GitHub Is Going Mainstream</a
-			>
-		</li>
+<section id="projects" style="margin-bottom: 3.5rem;">
+  <div class="section-header">
+    <h2 class="section-title">
+      <span class="ann ann-n ann-rainbow" data-note="Open Source">Featured Projects</span>
+    </h2>
+  </div>
 
-	</ul>
+  <div class="projects-grid">
+    <a href="https://github.com/42devops/salt-kube-lite" target="_blank" rel="noopener" class="project-card">
+      <div>
+        <div class="project-name">
+          <span>⚡ Salt-Kube Lite</span>
+          <span class="tag-badge" style="background: var(--brand-light); color: var(--brand-primary);">Kubernetes</span>
+        </div>
+        <p class="project-desc">
+          SaltStack quickstart to bootstrap a production-ready, highly available Kubernetes cluster.
+        </p>
+      </div>
+      <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--brand-primary); font-weight: 600;">
+        View on GitHub &rarr;
+      </div>
+    </a>
 
-	<h1>Other Interviews, Talks, Etc</h1>
-	<ul class="posts">
-		<li>
-			<span>12 Sep 2013</span> &raquo;
-			<a href="http://www.youtube.com/watch?v=k2vJNNAQZlg"
-				>Video: Fox Business News interview</a
-			>
-		</li>
+    <a href="https://github.com/syabro/neat-annotations" target="_blank" rel="noopener" class="project-card">
+      <div>
+        <div class="project-name">
+          <span>✨ Neat Annotations</span>
+          <span class="tag-badge" style="background: rgba(147, 51, 234, 0.15); color: var(--ann-purple);">Design</span>
+        </div>
+        <p class="project-desc">
+          Hand-drawn CSS annotations for inline text highlighting, custom directional arrows, and handwritten notes.
+        </p>
+      </div>
+      <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--brand-primary); font-weight: 600;">
+        View Theme Library &rarr;
+      </div>
+    </a>
+  </div>
+</section>
 
-	</ul> -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterPills = document.querySelectorAll('.filter-pill');
+    const postCards = document.querySelectorAll('.post-card');
 
-  <h1>Projects</h1>
-  <ul class="posts">
-    <li>
-      <a href="https://github.com/42devops/salt-kube-lite">Salt-Kube:</a> Saltstack quickstart a
-      production-ready Kubernetes cluster.
-    </li>
-  </ul>
-</div>
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', function() {
+        filterPills.forEach(p => p.classList.remove('active'));
+        this.classList.add('active');
+
+        const filter = this.getAttribute('data-filter');
+
+        postCards.forEach(card => {
+          const categories = card.getAttribute('data-categories') || '';
+          if (filter === 'all' || categories.includes(filter)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
