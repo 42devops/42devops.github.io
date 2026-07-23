@@ -8,40 +8,50 @@ comments: true
 
 This blog is now powered by **[neat-annotations](https://github.com/syabro/neat-annotations)** — a zero-JS CSS library for hand-drawn arrows, handwritten labels, and inline highlights.
 
-Here is a quick guide on how to annotate text in your Markdown posts using simple HTML markup!
+Here is a quick reference guide on how to annotate text in your Markdown articles!
 
-## Directional Arrows
+## Inline Highlights (Recommended for body text)
 
-You can point handwritten arrows from 8 different directions:
+When annotating inline body text, use **highlight-only** markers without floating notes or arrows. They render cleanly without disrupting line height or overlapping adjacent text:
 
-- **North (`ann-n`)**: <span class="ann ann-n ann-amber" data-note="Points up">Target Text</span> (label sits below)
-- **South (`ann-s`)**: <span class="ann ann-s ann-blue" data-note="Points down">Target Text</span> (label sits above)
-- **East (`ann-e`)**: <span class="ann ann-e ann-green" data-note="Points right">Target Text</span>
-- **West (`ann-w`)**: <span class="ann ann-w ann-purple" data-note="Points left">Target Text</span>
-- **North-West (`ann-nw`)**: <span class="ann ann-nw ann-red" data-note="Top-left corner">Target Text</span>
+<div style="background: var(--bg-subtle); border-radius: var(--radius-md); padding: 1.5rem 1.75rem; margin: 1.5rem 0; border: 1px solid var(--border-color);">
+  You can mark <span class="ann ann-amber">important words</span>, highlight <span class="ann ann-blue">key metrics</span>, or emphasize <span class="ann ann-green">critical commands</span> seamlessly inside any paragraph.
+</div>
 
-## Color Palette
+## Code & Specification Showcase ("In the Wild")
 
-`neat-annotations` comes with 6 built-in color styles:
+When you want to point arrows at code tokens, parameters, or specifications, give lines generous line-height (`3.4em`) so hand-drawn labels sit cleanly around the target text:
 
-1. **Amber**: <span class="ann ann-amber ann-n" data-note="Amber note">Highlight text</span>
-2. **Blue**: <span class="ann ann-blue ann-s" data-note="Blue note">Highlight text</span>
-3. **Green**: <span class="ann ann-green ann-n" data-note="Green note">Highlight text</span>
-4. **Red**: <span class="ann ann-red ann-s" data-note="Red note">Highlight text</span>
-5. **Purple**: <span class="ann ann-purple ann-n" data-note="Purple note">Highlight text</span>
-6. **Rainbow**: <span class="ann ann-rainbow ann-s" data-note="Animated hues!">Highlight text</span>
+<div class="ann-showcase-card">
+  <div style="color: var(--text-light); font-size: 0.8rem; line-height: 1; margin-bottom: 3.8rem; display: flex; align-items: center; gap: 0.5rem;">
+    <span style="color: #ff5f56;">●</span><span style="color: #ffbd2e;">●</span><span style="color: #27c93f;">●</span>
+    <span style="margin-left: 0.5rem;">docs/specs/cli.md</span>
+  </div>
 
-## Highlight Only (No Label)
+  <div style="margin-bottom: 2.5rem;">
+    - <span class="ann ann-amber ann-s" data-note="open task">[ ]</span>
+    <span class="ann ann-blue ann-s" data-note="stable ID">CLI-042</span> Add export command
+    <span class="ann ann-green ann-se" data-note="tag">#cli</span>
+    <span class="ann ann-red ann-sw" data-note="priority">!high</span>
+    <span class="ann ann-purple ann-nw" data-note="custom field">@blocked_by:CLI-041</span>
+  </div>
 
-Omit `data-note` and direction classes to create a simple handwritten marker highlight:
+  <div style="margin-top: 2rem;">
+    Write task output as <span class="ann ann-n ann-amber" data-note="description">JSON</span> for scripts and agents
+  </div>
+</div>
 
-You can mark <span class="ann ann-amber">important words</span> or <span class="ann ann-green">key metrics</span> seamlessly inline without arrows or notes.
+## Markdown Markup Syntax
 
-## Markdown Example
+To add annotations to your Markdown posts, simply wrap your target text in a `<span>` tag:
 
 ```html
-<!-- Example annotation in markdown -->
-The system updates <span class="ann ann-n ann-amber" data-note="zero downtime">in real time</span>.
-```
+<!-- Highlight only (no arrow) -->
+<span class="ann ann-amber">important note</span>
 
-Try using annotations in your next technical post to highlight key parameters, architecture points, or code snippets!
+<!-- Arrow pointing South with handwritten label -->
+<span class="ann ann-s ann-blue" data-note="stable ID">CLI-042</span>
+
+<!-- Arrow pointing North with handwritten label -->
+<span class="ann ann-n ann-amber" data-note="description">JSON</span>
+```
