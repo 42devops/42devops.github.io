@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
-    <title>{% if page.title %}{{ page.title }} | 42DevOps{% else %}42DevOps - Infrastructure & Engineering Notes{% endif %}</title>
+    <title>{% if page.title %}{% if page.title contains "42DevOps" %}{{ page.title }}{% else %}{{ page.title }} | 42DevOps{% endif %}{% else %}42DevOps | Infrastructure & Engineering Notes{% endif %}</title>
     <meta name="description" content="Engineering thoughts on DevOps, Kubernetes, Infrastructure, and Algorithms." />
     <meta name="author" content="42DevOps" />
 
@@ -13,10 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Shantell+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="/css/neat-annotations.css" type="text/css" />
-    <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
-    <link rel="stylesheet" href="/css/screen.css" type="text/css" />
+    <!-- Stylesheets (with cache-busting timestamp) -->
+    <link rel="stylesheet" href="/css/neat-annotations.css?v={{ site.time | date: '%s' }}" type="text/css" />
+    <link rel="stylesheet" href="/css/syntax.css?v={{ site.time | date: '%s' }}" type="text/css" />
+    <link rel="stylesheet" href="/css/screen.css?v={{ site.time | date: '%s' }}" type="text/css" />
 
     <!-- KaTeX CSS & JS for Math equations -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" crossorigin="anonymous">
