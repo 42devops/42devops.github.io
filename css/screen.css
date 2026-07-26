@@ -189,8 +189,29 @@ body {
 
 /* Hero Intro Banner */
 .hero-banner {
-  padding: 2rem 0 3rem 0;
+  position: relative;
+  text-align: center;
+  padding: 5.5rem 0 5rem 0;
   margin-bottom: 2.5rem;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.hero-pretext-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-annotation-wrapper {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  margin: 1.5rem 0;
 }
 
 .hero-title {
