@@ -15,7 +15,8 @@
   const phraseStream = [
     "42", "·", "Don't Panic", "·", "Keep Walking", "·", "Mostly Harmless", "·",
     "So Long", "·", "Thanks for All the Fish", "·", "42DevOps", "·",
-    "Infrastructure", "·", "Engineering", "·", "Life, the Universe, and Everything", "·"
+    "Infrastructure", "·", "Engineering", "·", "Life, the Universe, and Everything", "·",
+    "42", "·", "Don't Panic", "·", "Keep Walking", "·", "SRE", "·", "Cloud Native", "·"
   ];
 
   let dpr = window.devicePixelRatio || 1;
@@ -24,8 +25,6 @@
   let wordWidths = [];
 
   let mouse = { x: -1000, y: -1000, targetX: -1000, targetY: -1000 };
-  const orbRadius = 55;
-
   let dragon = null;
 
   function getFont() {
@@ -98,8 +97,8 @@
       window.DragonEngine.updateDragon(
         dragon,
         timestamp,
-        mouse.x,
-        mouse.y,
+        mouse.x < 0 ? width / 2 : mouse.x,
+        mouse.y < 0 ? height / 2 : mouse.y,
         isIdle,
         width / 2,
         height / 2
@@ -112,53 +111,69 @@
     ctx.fillStyle = colors.text;
     ctx.globalAlpha = 0.28;
 
-    const lineHeight = 24;
+    const lineHeight = 22;
     let wordIdx = 0;
 
-    for (let y = 22; y < height; y += lineHeight) {
+    // Build list of obstacle circles from dragon segments
+    const obstacles = [];
+    if (dragon && dragon.segments) {
+      // Head obstacle
+      const head = dragon.segments[0];
+      obstacles.push({ x: head.x, y: head.y, r: 48 });
+
+      // Body segment obstacles (every 3rd segment)
+      for (let i = 2; i < dragon.segments.length; i += 3) {
+        const seg = dragon.segments[i];
+        obstacles.push({ x: seg.x, y: seg.y, r: Math.max(16, seg.width * 0.6) });
+      }
+    }
+
+    for (let y = 18; y < height; y += lineHeight) {
       let x = 12;
 
       while (x < width - 12) {
         let availableSpan = width - 12 - x;
 
-        // Subtract mouse/dragon head orb obstacle
-        if (mouse.x > 0 && Math.abs(y - mouse.y) < orbRadius) {
-          const dy = Math.abs(y - mouse.y);
-          const dx = Math.sqrt(orbRadius * orbRadius - dy * dy);
-          const orbLeft = mouse.x - dx;
-          const orbRight = mouse.x + dx;
+        // Subtract dragon segment obstacles intersecting line at y
+        for (let obs of obstacles) {
+          const dy = Math.abs(y - obs.y);
+          if (dy < obs.r) {
+            const dx = Math.sqrt(obs.r * obs.r - dy * dy);
+            const obsLeft = obs.x - dx;
+            const obsRight = obs.x + dx;
 
-          if (x < orbRight && x + availableSpan > orbLeft) {
-            if (x < orbLeft) {
-              availableSpan = orbLeft - x;
-            } else {
-              x = orbRight;
-              availableSpan = width - 12 - x;
+            if (x < obsRight && x + availableSpan > obsLeft) {
+              if (x < obsLeft) {
+                availableSpan = obsLeft - x;
+              } else {
+                x = obsRight;
+                availableSpan = width - 12 - x;
+              }
             }
           }
         }
 
+        let count = 0;
         let currentSpan = 0;
-        let startWordIdx = wordIdx;
+        let checkIdx = wordIdx;
 
-        while (wordIdx < phraseStream.length && currentSpan + wordWidths[wordIdx] <= availableSpan) {
-          currentSpan += wordWidths[wordIdx];
-          wordIdx = (wordIdx + 1) % phraseStream.length;
-          if (wordIdx === startWordIdx) break;
+        while (currentSpan + wordWidths[checkIdx] <= availableSpan) {
+          currentSpan += wordWidths[checkIdx];
+          count++;
+          checkIdx = (checkIdx + 1) % phraseStream.length;
+          if (count === phraseStream.length) break;
         }
 
-        if (currentSpan <= 0) {
-          x += 20;
+        if (count === 0) {
+          x += 16;
           continue;
         }
 
         let renderX = x;
-        let count = (wordIdx >= startWordIdx) ? (wordIdx - startWordIdx) : (phraseStream.length - startWordIdx + wordIdx);
-
         for (let i = 0; i < count; i++) {
-          const idx = (startWordIdx + i) % phraseStream.length;
-          ctx.fillText(phraseStream[idx], renderX, y);
-          renderX += wordWidths[idx];
+          ctx.fillText(phraseStream[wordIdx], renderX, y);
+          renderX += wordWidths[wordIdx];
+          wordIdx = (wordIdx + 1) % phraseStream.length;
         }
 
         x += currentSpan + 8;
