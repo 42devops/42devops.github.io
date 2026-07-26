@@ -4,9 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
-    <title>{% if page.title %}{% if page.title contains "42DevOps" %}{{ page.title }}{% else %}{{ page.title }} | 42DevOps{% endif %}{% else %}42DevOps | Infrastructure & Engineering Notes{% endif %}</title>
-    <meta name="description" content="Engineering thoughts on DevOps, Kubernetes, Infrastructure, and Algorithms." />
-    <meta name="author" content="42DevOps" />
+    {% seo %}
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,19 +28,11 @@
         if (savedTheme) {
           document.documentElement.setAttribute('data-theme', savedTheme);
         } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          document.documentElement.setAttribute('data-theme', darkTheme = 'dark');
+          document.documentElement.setAttribute('data-theme', 'dark');
         }
       })();
     </script>
 
-    <!-- Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142392073-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag("js", new Date());
-      gtag("config", "UA-142392073-1");
-    </script>
   </head>
   <body>
     <div class="site">

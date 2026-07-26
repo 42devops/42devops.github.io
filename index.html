@@ -20,8 +20,10 @@ title: "42DevOps | Infrastructure & Engineering Notes"
 
   <div class="filter-bar" id="category-filters">
     <button class="filter-pill active" data-filter="all">All Posts</button>
-    <button class="filter-pill" data-filter="hello">Update</button>
-    <button class="filter-pill" data-filter="misc">Misc</button>
+    {% assign categories = site.categories | sort %}
+    {% for category in categories %}
+    <button class="filter-pill" data-filter="{{ category[0] | downcase }}">{{ category[0] | capitalize }}</button>
+    {% endfor %}
   </div>
 
   <div class="posts-grid" id="posts-container">
@@ -98,7 +100,7 @@ title: "42DevOps | Infrastructure & Engineering Notes"
         const filter = this.getAttribute('data-filter');
 
         postCards.forEach(card => {
-          const categories = card.getAttribute('data-categories') || '';
+          const categories = (card.getAttribute('data-categories') || '').split(/\s+/);
           if (filter === 'all' || categories.includes(filter)) {
             card.style.display = 'block';
           } else {
