@@ -207,13 +207,6 @@ body {
   z-index: 1;
 }
 
-.hero-annotation-wrapper {
-  position: relative;
-  z-index: 2;
-  display: inline-block;
-  margin: 1.5rem 0;
-}
-
 .hero-title {
   font-family: var(--font-serif);
   font-size: 2.2rem;
