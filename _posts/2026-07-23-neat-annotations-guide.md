@@ -23,20 +23,20 @@ When annotating inline body text, use **highlight-only** markers without floatin
 When you want to point arrows at code tokens, parameters, or specifications, give lines generous line-height (`3.4em`) so hand-drawn labels sit cleanly around the target text:
 
 <div class="ann-showcase-card">
-  <div style="color: var(--text-light); font-size: 0.8rem; line-height: 1; margin-bottom: 3.8rem; display: flex; align-items: center; gap: 0.5rem;">
+  <div style="color: var(--text-light); font-size: 0.8rem; line-height: 1; margin-bottom: 4.5rem; display: flex; align-items: center; gap: 0.5rem;">
     <span style="color: #ff5f56;">●</span><span style="color: #ffbd2e;">●</span><span style="color: #27c93f;">●</span>
     <span style="margin-left: 0.5rem;">docs/specs/cli.md</span>
   </div>
 
-  <div style="margin-bottom: 2.5rem;">
+  <div style="margin-bottom: 4rem; line-height: 3.2em;">
     - <span class="ann ann-amber ann-s" data-note="open task">[ ]</span>
-    <span class="ann ann-blue ann-s" data-note="stable ID">CLI-042</span> Add export command
-    <span class="ann ann-green ann-se" data-note="tag">#cli</span>
+    <span class="ann ann-blue ann-se" data-note="stable ID">CLI-042</span> Add export command
+    <span class="ann ann-green ann-s" data-note="tag">#cli</span>
     <span class="ann ann-red ann-sw" data-note="priority">!high</span>
     <span class="ann ann-purple ann-nw" data-note="custom field">@blocked_by:CLI-041</span>
   </div>
 
-  <div style="margin-top: 2rem;">
+  <div style="margin-top: 2rem; margin-bottom: 1.5rem; line-height: 3.2em;">
     Write task output as <span class="ann ann-n ann-amber" data-note="description">JSON</span> for scripts and agents
   </div>
 </div>
