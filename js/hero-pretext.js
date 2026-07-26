@@ -122,19 +122,35 @@
     const lineHeight = 22;
     let wordIdx = 0;
 
-    // Build list of obstacle circles from dragon segments
-    const obstacles = [];
+    // Build list of obstacles (dragon circles + DOM element rectangles)
+    const circularObstacles = [];
     if (dragon && dragon.segments) {
       // Head obstacle
       const head = dragon.segments[0];
-      obstacles.push({ x: head.x, y: head.y, r: 48 });
+      circularObstacles.push({ x: head.x, y: head.y, r: 48 });
 
       // Body segment obstacles (every 3rd segment)
       for (let i = 2; i < dragon.segments.length; i += 3) {
         const seg = dragon.segments[i];
-        obstacles.push({ x: seg.x, y: seg.y, r: Math.max(16, seg.width * 0.6) });
+        circularObstacles.push({ x: seg.x, y: seg.y, r: Math.max(16, seg.width * 0.6) });
       }
     }
+
+    // Query DOM obstacles inside container
+    const domObstacles = [];
+    const containerRect = container.getBoundingClientRect();
+    const obstacleElements = container.querySelectorAll('.pretext-obstacle, .hero-title, .hero-subtitle');
+    obstacleElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const pad = 12; // padding around UI elements
+      const top = rect.top - containerRect.top - pad;
+      const bottom = rect.bottom - containerRect.top + pad;
+      const left = rect.left - containerRect.left - pad;
+      const right = rect.right - containerRect.left + pad;
+      if (right > 0 && left < width && bottom > 0 && top < height) {
+        domObstacles.push({ left, right, top, bottom });
+      }
+    });
 
     for (let y = 18; y < height; y += lineHeight) {
       let x = 12;
@@ -142,8 +158,8 @@
       while (x < width - 12) {
         let availableSpan = width - 12 - x;
 
-        // Subtract dragon segment obstacles intersecting line at y
-        for (let obs of obstacles) {
+        // 1. Subtract dragon circular segment obstacles intersecting line at y
+        for (let obs of circularObstacles) {
           const dy = Math.abs(y - obs.y);
           if (dy < obs.r) {
             const dx = Math.sqrt(obs.r * obs.r - dy * dy);
@@ -155,6 +171,20 @@
                 availableSpan = obsLeft - x;
               } else {
                 x = obsRight;
+                availableSpan = width - 12 - x;
+              }
+            }
+          }
+        }
+
+        // 2. Subtract DOM rectangular obstacles intersecting line at y
+        for (let obs of domObstacles) {
+          if (y >= obs.top && y <= obs.bottom) {
+            if (x < obs.right && x + availableSpan > obs.left) {
+              if (x < obs.left) {
+                availableSpan = obs.left - x;
+              } else {
+                x = obs.right;
                 availableSpan = width - 12 - x;
               }
             }
@@ -173,7 +203,26 @@
         }
 
         if (count === 0) {
-          x += 16;
+          // If phrase doesn't fit in gap, try CJK/character sub-chunk fitting
+          const phrase = phraseStream[wordIdx];
+          let subFit = "";
+          let subWidth = 0;
+          for (let char of phrase) {
+            const charWidth = ctx.measureText(char).width;
+            if (subWidth + charWidth <= availableSpan) {
+              subFit += char;
+              subWidth += charWidth;
+            } else {
+              break;
+            }
+          }
+
+          if (subFit.length > 0 && availableSpan > 20) {
+            ctx.fillText(subFit, x, y);
+            x += subWidth + 8;
+          } else {
+            x += 16;
+          }
           continue;
         }
 
