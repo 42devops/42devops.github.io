@@ -813,11 +813,10 @@ pre code {
 .pretext-rich-note {
   position: relative;
   width: 100%;
-  min-height: 160px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 1.25rem 1.5rem;
+  padding: 0;
   margin: 1.75rem 0;
   box-shadow: var(--shadow-sm);
   overflow: hidden;
