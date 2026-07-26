@@ -18,7 +18,7 @@
       try {
         rawItems = JSON.parse(container.getAttribute('data-items') || '[]');
       } catch(e) {
-        console.warn('Invalid JSON in data-items for .pretext-rich-note', e);
+        console.error('Invalid data-items JSON in .pretext-rich-note', e);
         return;
       }
 
@@ -26,16 +26,18 @@
 
       const canvas = document.createElement('canvas');
       canvas.className = 'pretext-rich-note-canvas';
-      canvas.style.cssText = 'width: 100%; height: 100%; display: block;';
+      canvas.style.cssText = 'width: 100%; display: block;';
       container.appendChild(canvas);
 
       const ctx = canvas.getContext('2d');
       let dpr = window.devicePixelRatio || 1;
       let width = 0;
-      let height = 0;
       let itemWidths = [];
 
       function getFont(type = 'text') {
+        if (type === 'title') {
+          return `700 16px 'Plus Jakarta Sans', 'Inter', sans-serif`;
+        }
         if (type === 'code') {
           return `13px 'JetBrains Mono', 'Fira Code', Consolas, monospace`;
         }
@@ -49,6 +51,10 @@
         if (typeof item === 'string') {
           ctx.font = getFont('text');
           return ctx.measureText(item + " ").width;
+        }
+        if (item.type === 'title') {
+          ctx.font = getFont('title');
+          return ctx.measureText(item.text).width + 10;
         }
         if (item.type === 'chip') {
           ctx.font = getFont('chip');
@@ -66,22 +72,6 @@
         itemWidths = rawItems.map(getItemWidth);
       }
 
-      function resize() {
-        const rect = container.getBoundingClientRect();
-        width = rect.width || 600;
-        height = rect.height || 180;
-        dpr = window.devicePixelRatio || 1;
-
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        canvas.style.width = width + 'px';
-        canvas.style.height = height + 'px';
-
-        ctx.scale(dpr, dpr);
-        measureItems();
-        draw();
-      }
-
       function getThemeColors() {
         const style = getComputedStyle(document.documentElement);
         return {
@@ -91,114 +81,116 @@
         };
       }
 
-      function draw() {
-        ctx.clearRect(0, 0, width, height);
+      function layoutAndRender() {
+        const rect = container.getBoundingClientRect();
+        width = rect.width || 600;
+        dpr = window.devicePixelRatio || 1;
+
+        measureItems();
         const colors = getThemeColors();
 
-        // Detect DOM obstacles inside/adjacent to container
-        const domObstacles = [];
-        const containerRect = container.getBoundingClientRect();
-        const obstacleElements = container.querySelectorAll('.pretext-obstacle, img, blockquote, .ann-showcase-card');
-        obstacleElements.forEach(el => {
-          const rect = el.getBoundingClientRect();
-          const pad = 10;
-          const top = rect.top - containerRect.top - pad;
-          const bottom = rect.bottom - containerRect.top + pad;
-          const left = rect.left - containerRect.left - pad;
-          const right = rect.right - containerRect.left + pad;
-          if (right > 0 && left < width && bottom > 0 && top < height) {
-            domObstacles.push({ left, right, top, bottom });
-          }
-        });
+        const paddingX = 16;
+        const paddingY = 20;
+        const lineHeight = 28;
+        const availableWidth = Math.max(200, width - paddingX * 2);
 
-        const lineHeight = 26;
+        let currentX = paddingX;
+        let currentY = paddingY + 6;
         let itemIdx = 0;
 
-        for (let y = 20; y < height; y += lineHeight) {
-          let x = 12;
+        const renderOps = [];
 
-          while (x < width - 12) {
-            let availableSpan = width - 12 - x;
+        while (itemIdx < rawItems.length) {
+          const item = rawItems[itemIdx];
+          const itemW = itemWidths[itemIdx];
+          const isTitle = (typeof item === 'object' && item.type === 'title');
 
-            for (let obs of domObstacles) {
-              if (y >= obs.top && y <= obs.bottom) {
-                if (x < obs.right && x + availableSpan > obs.left) {
-                  if (x < obs.left) {
-                    availableSpan = obs.left - x;
-                  } else {
-                    x = obs.right;
-                    availableSpan = width - 12 - x;
-                  }
-                }
-              }
-            }
-
-            let count = 0;
-            let currentSpan = 0;
-            let checkIdx = itemIdx;
-
-            while (currentSpan + itemWidths[checkIdx] <= availableSpan) {
-              currentSpan += itemWidths[checkIdx];
-              count++;
-              checkIdx = (checkIdx + 1) % rawItems.length;
-              if (count === rawItems.length) break;
-            }
-
-            if (count === 0) {
-              x += 16;
-              continue;
-            }
-
-            let renderX = x;
-            for (let i = 0; i < count; i++) {
-              const item = rawItems[itemIdx];
-              const itemW = itemWidths[itemIdx];
-
-              if (typeof item === 'string') {
-                ctx.font = getFont('text');
-                ctx.fillStyle = colors.text;
-                ctx.fillText(item, renderX, y);
-              } else if (item.type === 'chip') {
-                ctx.fillStyle = item.bg || 'rgba(27, 54, 93, 0.12)';
-                if (ctx.roundRect) {
-                  ctx.beginPath();
-                  ctx.roundRect(renderX, y - 14, itemW - 4, 18, 9);
-                  ctx.fill();
-                } else {
-                  ctx.fillRect(renderX, y - 14, itemW - 4, 18);
-                }
-                ctx.font = getFont('chip');
-                ctx.fillStyle = item.color || colors.brand;
-                ctx.fillText(item.text, renderX + 8, y - 1);
-              } else if (item.type === 'code') {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.07)';
-                if (ctx.roundRect) {
-                  ctx.beginPath();
-                  ctx.roundRect(renderX, y - 14, itemW - 4, 18, 4);
-                  ctx.fill();
-                } else {
-                  ctx.fillRect(renderX, y - 14, itemW - 4, 18);
-                }
-                ctx.font = getFont('code');
-                ctx.fillStyle = colors.text;
-                ctx.fillText(item.text, renderX + 5, y - 1);
-              } else {
-                ctx.font = getFont('text');
-                ctx.fillStyle = colors.text;
-                ctx.fillText(item.text || '', renderX, y);
-              }
-
-              renderX += itemW;
-              itemIdx = (itemIdx + 1) % rawItems.length;
-            }
-
-            x += currentSpan + 8;
+          // If title, force new line if not at line start
+          if (isTitle && currentX > paddingX) {
+            currentX = paddingX;
+            currentY += lineHeight + 4;
           }
+
+          // If item overflows current line, wrap to next line
+          if (currentX + itemW > paddingX + availableWidth && currentX > paddingX) {
+            currentX = paddingX;
+            currentY += lineHeight;
+          }
+
+          renderOps.push({
+            item,
+            width: itemW,
+            x: currentX,
+            y: currentY
+          });
+
+          currentX += itemW + 6;
+
+          // If title, force line break after title
+          if (isTitle) {
+            currentX = paddingX;
+            currentY += lineHeight + 4;
+          }
+
+          itemIdx++;
         }
+
+        const calculatedHeight = Math.max(90, currentY + paddingY);
+
+        canvas.width = width * dpr;
+        canvas.height = calculatedHeight * dpr;
+        canvas.style.width = width + 'px';
+        canvas.style.height = calculatedHeight + 'px';
+        container.style.height = calculatedHeight + 'px';
+
+        ctx.scale(dpr, dpr);
+        ctx.clearRect(0, 0, width, calculatedHeight);
+
+        renderOps.forEach(op => {
+          const { item, width: itemW, x, y } = op;
+
+          if (typeof item === 'string') {
+            ctx.font = getFont('text');
+            ctx.fillStyle = colors.text;
+            ctx.fillText(item, x, y);
+          } else if (item.type === 'title') {
+            ctx.font = getFont('title');
+            ctx.fillStyle = colors.brand;
+            ctx.fillText(item.text, x, y);
+          } else if (item.type === 'chip') {
+            ctx.fillStyle = item.bg || 'rgba(27, 54, 93, 0.12)';
+            if (ctx.roundRect) {
+              ctx.beginPath();
+              ctx.roundRect(x, y - 14, itemW - 4, 18, 9);
+              ctx.fill();
+            } else {
+              ctx.fillRect(x, y - 14, itemW - 4, 18);
+            }
+            ctx.font = getFont('chip');
+            ctx.fillStyle = item.color || colors.brand;
+            ctx.fillText(item.text, x + 8, y - 1);
+          } else if (item.type === 'code') {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.07)';
+            if (ctx.roundRect) {
+              ctx.beginPath();
+              ctx.roundRect(x, y - 14, itemW - 4, 18, 4);
+              ctx.fill();
+            } else {
+              ctx.fillRect(x, y - 14, itemW - 4, 18);
+            }
+            ctx.font = getFont('code');
+            ctx.fillStyle = colors.text;
+            ctx.fillText(item.text, x + 5, y - 1);
+          } else {
+            ctx.font = getFont('text');
+            ctx.fillStyle = colors.text;
+            ctx.fillText(item.text || '', x, y);
+          }
+        });
       }
 
-      window.addEventListener('resize', resize);
-      resize();
+      window.addEventListener('resize', layoutAndRender);
+      layoutAndRender();
     });
   }
 
