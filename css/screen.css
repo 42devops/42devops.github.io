@@ -466,6 +466,7 @@ body {
 
 /* Post Detail Styling */
 article.post-detail {
+  position: relative;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -647,28 +648,19 @@ pre code {
   color: inherit;
 }
 
-/* Post Article Layout & Sticky TOC */
-.post-layout {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 2.5rem;
-  align-items: start;
-}
-
-@media (max-width: 992px) {
-  .post-layout {
-    grid-template-columns: 1fr;
-  }
-  .post-sidebar {
-    display: none;
-  }
-}
-
+/* Post Article Sticky Floating TOC on Right Margin */
 .post-sidebar {
-  position: sticky;
-  top: 90px;
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
+  position: absolute;
+  top: 2.75rem;
+  left: calc(100% + 1.5rem);
+  width: 230px;
+  z-index: 80;
+}
+
+@media (max-width: 1280px) {
+  .post-sidebar {
+    display: none !important;
+  }
 }
 
 .toc-wrapper {
