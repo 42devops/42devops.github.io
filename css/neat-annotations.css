@@ -3,8 +3,8 @@
    Labels look best with the Shantell Sans font (falls back to system cursive). */
 
 .ann {
-  --ann-color: oklch(0.62 0.005 30);
-  --ann-mark: light-dark(color-mix(in oklch, var(--ann-color) 10%, transparent), oklch(from var(--ann-color) l calc(c * 1.35) h / 24%));
+  --ann-color: #1B365D;
+  --ann-mark: #E4ECF5;
   --ann-font: 'Shantell Sans', cursive;
   --ann-target-gap: 5px;
   --ann-label-gap: 6px;
@@ -64,22 +64,22 @@
 
 .ann-arrow-only::before { display: block !important; }
 
-.ann-amber { --ann-color: #d97706; --ann-mark: light-dark(color-mix(in oklch, #ffb000 14%, transparent), color-mix(in oklch, #ffb000 22%, transparent)); }
-.ann-blue { --ann-color: #2563eb; }
-.ann-green { --ann-color: #16a34a; }
-.ann-red { --ann-color: #dc2626; }
-.ann-purple { --ann-color: #9333ea; }
+.ann-amber { --ann-color: #b45309; --ann-mark: #fef3c7; }
+.ann-blue { --ann-color: #1B365D; --ann-mark: #E4ECF5; }
+.ann-green { --ann-color: #2e5b38; --ann-mark: #e6f2eb; }
+.ann-red { --ann-color: #9e2a2b; --ann-mark: #fce8e8; }
+.ann-purple { --ann-color: #4a3560; --ann-mark: #f0ebf5; }
 .ann-rainbow {
   --ann-color: oklch(0.65 0.28 var(--ann-rainbow-hue, 350deg));
 }
 .ann-no-mark { --ann-mark: transparent; }
 
-/* Dark mode overrides for high contrast readability */
-[data-theme="dark"] .ann-amber { --ann-color: #fbbf24; }
-[data-theme="dark"] .ann-blue { --ann-color: #60a5fa; }
-[data-theme="dark"] .ann-green { --ann-color: #4ade80; }
-[data-theme="dark"] .ann-red { --ann-color: #f87171; }
-[data-theme="dark"] .ann-purple { --ann-color: #c084fc; }
+/* Dark mode overrides aligned with Kami dark theme */
+[data-theme="dark"] .ann-amber { --ann-color: #fbbf24; --ann-mark: rgba(251, 191, 36, 0.2); }
+[data-theme="dark"] .ann-blue { --ann-color: #81acd9; --ann-mark: rgba(129, 172, 217, 0.2); }
+[data-theme="dark"] .ann-green { --ann-color: #6ee7b7; --ann-mark: rgba(110, 231, 183, 0.2); }
+[data-theme="dark"] .ann-red { --ann-color: #f87171; --ann-mark: rgba(248, 113, 113, 0.2); }
+[data-theme="dark"] .ann-purple { --ann-color: #c084fc; --ann-mark: rgba(192, 132, 252, 0.2); }
 
 @property --ann-rainbow-hue {
   syntax: "<angle>";
