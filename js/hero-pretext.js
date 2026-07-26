@@ -13,10 +13,11 @@
 
   const ctx = canvas.getContext('2d');
   const phraseStream = [
-    "42", "·", "Don't Panic", "·", "Keep Walking", "·", "Mostly Harmless", "·",
-    "So Long", "·", "Thanks for All the Fish", "·", "42DevOps", "·",
-    "Infrastructure", "·", "Engineering", "·", "Life, the Universe, and Everything", "·",
-    "42", "·", "Don't Panic", "·", "Keep Walking", "·", "SRE", "·", "Cloud Native", "·"
+    "42", "·", "Don't Panic", "·", "一切有为法 如梦幻泡影", "·", "Keep Walking", "·",
+    "如露亦如电 应作如是观", "·", "Mostly Harmless", "·", "应无所住 而生其心", "·",
+    "So Long", "·", "知我说法 如筏喻者 法尚应舍 何况非法", "·", "Thanks for All the Fish", "·",
+    "凡所有相 皆是虚妄", "·", "42DevOps", "·", "若见诸相非相 则见如来", "·",
+    "Infrastructure", "·", "Engineering", "·", "Life, the Universe, and Everything", "·"
   ];
 
   let dpr = window.devicePixelRatio || 1;
