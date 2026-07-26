@@ -106,12 +106,20 @@ body {
 
 /* Navigation & Header */
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 0 2rem 0;
+  padding: 1rem 1.5rem;
   margin-bottom: 2rem;
+  background: rgba(var(--bg-card-rgb, 250, 249, 245), 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-color);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  transition: padding var(--transition-normal), background-color var(--transition-normal);
 }
 
 .brand-wrapper {
@@ -304,10 +312,38 @@ body {
 
 /* Posts List Modern Cards */
 .posts-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
   margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+  .posts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.post-card.featured-card {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(var(--bg-card-rgb), 0.95) 100%);
+  border: 1.5px solid var(--brand-primary);
+  padding: 2rem;
+  position: relative;
+}
+
+.featured-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.725rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brand-primary);
+  background: var(--brand-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.85rem;
 }
 
 .post-card {
@@ -611,7 +647,121 @@ pre code {
   color: inherit;
 }
 
-/* Footer */
+/* Post Article Layout & Sticky TOC */
+.post-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .post-layout {
+    grid-template-columns: 1fr;
+  }
+  .post-sidebar {
+    display: none;
+  }
+}
+
+.post-sidebar {
+  position: sticky;
+  top: 90px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.toc-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-light);
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.toc-item.h3 {
+  padding-left: 0.85rem;
+  font-size: 0.825rem;
+}
+
+.toc-item a {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  line-height: 1.4;
+  display: block;
+  transition: color var(--transition-fast);
+}
+
+.toc-item a:hover,
+.toc-item a.active {
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+
+/* Dynamic Footnote Popover */
+.footnote-popover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 200;
+  width: 280px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  box-shadow: var(--shadow-hover);
+  margin-top: 0.4rem;
+  animation: fadeInDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footnote-close-btn {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--text-light);
+  cursor: pointer;
+  line-height: 1;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .site-footer {
   margin-top: auto;
   padding: 2.5rem 0 1rem 0;

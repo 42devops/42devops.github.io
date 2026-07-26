@@ -26,7 +26,10 @@ title: "42DevOps | Infrastructure & Engineering Notes"
 
   <div class="posts-grid" id="posts-container">
     {% for post in site.posts %}
-    <a href="{{ post.url }}" class="post-card" data-categories="{% if post.categories %}{{ post.categories | join: ' ' | downcase }}{% endif %}">
+    <a href="{{ post.url }}" class="post-card {% if forloop.first %}featured-card{% endif %}" data-categories="{% if post.categories %}{{ post.categories | join: ' ' | downcase }}{% endif %}">
+      {% if forloop.first %}
+      <div class="featured-badge">Featured Article</div>
+      {% endif %}
       <div class="post-card-header">
         <h3 class="post-card-title">{{ post.title }}</h3>
         <span class="post-card-meta">
@@ -36,7 +39,11 @@ title: "42DevOps | Infrastructure & Engineering Notes"
 
       {% if post.excerpt %}
       <div class="post-card-snippet">
-        {{ post.excerpt | strip_html | truncatewords: 24 }}
+        {% if forloop.first %}
+          {{ post.excerpt | strip_html | truncatewords: 42 }}
+        {% else %}
+          {{ post.excerpt | strip_html | truncatewords: 24 }}
+        {% endif %}
       </div>
       {% endif %}
 
