@@ -13,11 +13,18 @@
 
   const ctx = canvas.getContext('2d');
   const phraseStream = [
-    "42", "·", "Don't Panic", "·", "一切有为法 如梦幻泡影", "·", "Keep Walking", "·",
-    "如露亦如电 应作如是观", "·", "Mostly Harmless", "·", "应无所住 而生其心", "·",
-    "So Long", "·", "知我说法 如筏喻者 法尚应舍 何况非法", "·", "Thanks for All the Fish", "·",
-    "凡所有相 皆是虚妄", "·", "42DevOps", "·", "若见诸相非相 则见如来", "·",
-    "Infrastructure", "·", "Engineering", "·", "Life, the Universe, and Everything", "·"
+    "Hello World", "·", "42", "·", "Don't Panic", "·", "一切有为法 如梦幻泡影", "·",
+    "Keep Walking", "·", "如露亦如电 应作如是观", "·", "Mostly Harmless", "·",
+    "应无所住 而生其心", "·", "So Long", "·", "知我说法 如筏喻者", "·",
+    "法尚应舍 何况非法", "·", "Thanks for All the Fish", "·", "127.0.0.1", "·",
+    "Home Sweet Home", "·", "凡所有相 皆是虚妄", "·", "若见诸相非相 则见如来", "·",
+    "竹杖芒鞋轻胜马", "·", "一蓑烟雨任平生", "·", "回首向来萧瑟处", "·",
+    "也无风雨也无晴", "·", "行到水穷处", "·", "坐看云起时", "·",
+    "寄蜉蝣于天地", "·", "渺沧海之一粟", "·", "但愿人长久", "·", "千里共婵娟", "·",
+    "蓦然回首", "·", "灯火阑珊处", "·", "上善若水", "·", "水善利万物而不争", "·",
+    "道生一 一生二", "·", "三生万物", "·", "There is no cloud", "·", "Kernel Panic", "·",
+    "0x42", "·", "Tears in rain", "·", "Do not go gentle", "·", "Stay hungry, stay foolish", "·",
+    "42DevOps", "·", "Infrastructure", "·", "Kubernetes", "·", "Life, the Universe, and Everything", "·"
   ];
 
   let dpr = window.devicePixelRatio || 1;
