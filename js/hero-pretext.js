@@ -13,17 +13,27 @@
 
   const ctx = canvas.getContext('2d');
   const phraseStream = [
-    "Hello World", "·", "42", "·", "Don't Panic", "·", "一切有为法 如梦幻泡影", "·",
-    "Keep Walking", "·", "如露亦如电 应作如是观", "·", "Mostly Harmless", "·",
-    "应无所住 而生其心", "·", "So Long", "·", "知我说法 如筏喻者", "·",
-    "法尚应舍 何况非法", "·", "Thanks for All the Fish", "·", "127.0.0.1", "·",
-    "Home Sweet Home", "·", "凡所有相 皆是虚妄", "·", "若见诸相非相 则见如来", "·",
+    { type: 'chip', text: '0x42', bg: 'rgba(27, 54, 93, 0.18)', color: 'var(--brand-primary)' },
+    { type: 'text', text: "Hello World" },
+    "·",
+    { type: 'code', text: '127.0.0.1' },
+    "·",
+    { type: 'chip', text: 'K8s', bg: 'rgba(50, 108, 229, 0.18)', color: '#2563eb' },
+    "·",
+    "Don't Panic", "·", "一切有为法 如梦幻泡影", "·",
+    { type: 'chip', text: 'DevOps', bg: 'rgba(16, 185, 129, 0.18)', color: '#059669' },
+    "·", "Keep Walking", "·", "如露亦如电 应作如是观", "·",
+    { type: 'code', text: 'kubectl apply -f' },
+    "·", "Mostly Harmless", "·", "应无所住 而生其心", "·", "So Long", "·",
+    "知我说法 如筏喻者", "·", "法尚应舍 何况非法", "·", "Thanks for All the Fish", "·",
+    { type: 'chip', text: 'v1.30', bg: 'rgba(217, 119, 6, 0.18)', color: '#d97706' },
+    "·", "Home Sweet Home", "·", "凡所有相 皆是虚妄", "·", "若见诸相非相 则见如来", "·",
     "竹杖芒鞋轻胜马", "·", "一蓑烟雨任平生", "·", "回首向来萧瑟处", "·",
     "也无风雨也无晴", "·", "行到水穷处", "·", "坐看云起时", "·",
     "寄蜉蝣于天地", "·", "渺沧海之一粟", "·", "但愿人长久", "·", "千里共婵娟", "·",
     "蓦然回首", "·", "灯火阑珊处", "·", "上善若水", "·", "水善利万物而不争", "·",
     "道生一 一生二", "·", "三生万物", "·", "There is no cloud", "·", "Kernel Panic", "·",
-    "0x42", "·", "Tears in rain", "·", "Do not go gentle", "·", "Stay hungry, stay foolish", "·",
+    "Tears in rain", "·", "Do not go gentle", "·", "Stay hungry, stay foolish", "·",
     "42DevOps", "·", "Infrastructure", "·", "Kubernetes", "·", "Life, the Universe, and Everything", "·"
   ];
 
@@ -35,13 +45,35 @@
   let mouse = { x: -1000, y: -1000, targetX: -1000, targetY: -1000 };
   let dragon = null;
 
-  function getFont() {
+  function getFont(type = 'text') {
+    if (type === 'code') {
+      return `12px 'JetBrains Mono', 'Fira Code', Consolas, monospace`;
+    }
+    if (type === 'chip') {
+      return `600 11px 'Plus Jakarta Sans', 'Inter', sans-serif`;
+    }
     return `500 13px 'Charter', 'Source Serif 4', 'Noto Serif SC', Georgia, serif`;
   }
 
+  function getItemWidth(item) {
+    if (typeof item === 'string') {
+      ctx.font = getFont('text');
+      return ctx.measureText(item + " ").width;
+    }
+    if (item.type === 'chip') {
+      ctx.font = getFont('chip');
+      return ctx.measureText(item.text).width + 18;
+    }
+    if (item.type === 'code') {
+      ctx.font = getFont('code');
+      return ctx.measureText(item.text).width + 12;
+    }
+    ctx.font = getFont('text');
+    return ctx.measureText((item.text || '') + " ").width;
+  }
+
   function measureWords() {
-    ctx.font = getFont();
-    wordWidths = phraseStream.map(w => ctx.measureText(w + " ").width);
+    wordWidths = phraseStream.map(getItemWidth);
   }
 
   function resize() {
@@ -203,23 +235,29 @@
         }
 
         if (count === 0) {
-          // If phrase doesn't fit in gap, try CJK/character sub-chunk fitting
-          const phrase = phraseStream[wordIdx];
-          let subFit = "";
-          let subWidth = 0;
-          for (let char of phrase) {
-            const charWidth = ctx.measureText(char).width;
-            if (subWidth + charWidth <= availableSpan) {
-              subFit += char;
-              subWidth += charWidth;
-            } else {
-              break;
+          // If phrase doesn't fit in gap, try CJK/character sub-chunk fitting for string items
+          const item = phraseStream[wordIdx];
+          if (typeof item === 'string') {
+            let subFit = "";
+            let subWidth = 0;
+            for (let char of item) {
+              const charWidth = ctx.measureText(char).width;
+              if (subWidth + charWidth <= availableSpan) {
+                subFit += char;
+                subWidth += charWidth;
+              } else {
+                break;
+              }
             }
-          }
 
-          if (subFit.length > 0 && availableSpan > 20) {
-            ctx.fillText(subFit, x, y);
-            x += subWidth + 8;
+            if (subFit.length > 0 && availableSpan > 20) {
+              ctx.font = getFont('text');
+              ctx.fillStyle = colors.text;
+              ctx.fillText(subFit, x, y);
+              x += subWidth + 8;
+            } else {
+              x += 16;
+            }
           } else {
             x += 16;
           }
@@ -228,8 +266,47 @@
 
         let renderX = x;
         for (let i = 0; i < count; i++) {
-          ctx.fillText(phraseStream[wordIdx], renderX, y);
-          renderX += wordWidths[wordIdx];
+          const item = phraseStream[wordIdx];
+          const itemW = wordWidths[wordIdx];
+
+          if (typeof item === 'string') {
+            ctx.font = getFont('text');
+            ctx.fillStyle = colors.text;
+            ctx.fillText(item, renderX, y);
+          } else if (item.type === 'chip') {
+            // Draw Atomic Chip pill
+            ctx.fillStyle = item.bg || 'rgba(27, 54, 93, 0.18)';
+            if (ctx.roundRect) {
+              ctx.beginPath();
+              ctx.roundRect(renderX, y - 12, itemW - 4, 16, 8);
+              ctx.fill();
+            } else {
+              ctx.fillRect(renderX, y - 12, itemW - 4, 16);
+            }
+            // Draw Chip label
+            ctx.font = getFont('chip');
+            ctx.fillStyle = item.color || colors.brand;
+            ctx.fillText(item.text, renderX + 7, y - 1);
+          } else if (item.type === 'code') {
+            // Draw Code span background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            if (ctx.roundRect) {
+              ctx.beginPath();
+              ctx.roundRect(renderX, y - 12, itemW - 4, 16, 4);
+              ctx.fill();
+            } else {
+              ctx.fillRect(renderX, y - 12, itemW - 4, 16);
+            }
+            ctx.font = getFont('code');
+            ctx.fillStyle = colors.text;
+            ctx.fillText(item.text, renderX + 4, y - 1);
+          } else {
+            ctx.font = getFont('text');
+            ctx.fillStyle = colors.text;
+            ctx.fillText(item.text || '', renderX, y);
+          }
+
+          renderX += itemW;
           wordIdx = (wordIdx + 1) % phraseStream.length;
         }
 
