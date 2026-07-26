@@ -1,6 +1,7 @@
 /*****************************************************************************/
 /* Pretext Typographic Obstacle Engine for Hero Banner                       */
 /* Inspired by Cheng Lou's Pretext (https://chenglou.me/pretext/)            */
+/* with Dragon Cursor integration from illustrated-manuscript               */
 /*****************************************************************************/
 
 (function() {
@@ -8,15 +9,13 @@
 
   const canvas = document.getElementById('hero-pretext-canvas');
   const container = document.querySelector('.hero-banner');
-  const targetObj = document.querySelector('.hero-annotation-wrapper');
-  if (!canvas || !container || !targetObj) return;
+  if (!canvas || !container) return;
 
   const ctx = canvas.getContext('2d');
   const phraseStream = [
-    "42DevOps", "·", "Infrastructure", "Engineering", "·", "Kubernetes", "Clusters", "·",
-    "Distributed", "Systems", "·", "High", "Performance", "Algorithms", "·", "Site", "Reliability", "·",
-    "Automation", "·", "Cloud", "Native", "·", "Observability", "·", "Linux", "Kernel", "·",
-    "System", "Architecture", "·", "SRE", "Notes", "·"
+    "42", "·", "Don't Panic", "·", "Keep Walking", "·", "Mostly Harmless", "·",
+    "So Long", "·", "Thanks for All the Fish", "·", "42DevOps", "·",
+    "Infrastructure", "·", "Engineering", "·", "Life, the Universe, and Everything", "·"
   ];
 
   let dpr = window.devicePixelRatio || 1;
@@ -25,7 +24,9 @@
   let wordWidths = [];
 
   let mouse = { x: -1000, y: -1000, targetX: -1000, targetY: -1000 };
-  const orbRadius = 65;
+  const orbRadius = 55;
+
+  let dragon = null;
 
   function getFont() {
     return `500 13px 'Charter', 'Source Serif 4', 'Noto Serif SC', Georgia, serif`;
@@ -49,6 +50,10 @@
 
     ctx.scale(dpr, dpr);
     measureWords();
+
+    if (!dragon && window.DragonEngine) {
+      dragon = window.DragonEngine.createDragon(width / 2, height / 2, 0.20);
+    }
   }
 
   function getThemeColors() {
@@ -70,23 +75,37 @@
     mouse.targetY = -1000;
   });
 
-  function draw() {
+  container.addEventListener('click', () => {
+    if (dragon && window.DragonEngine) {
+      window.DragonEngine.spawnFire(dragon);
+    }
+  });
+
+  if (window.DragonEngine) {
+    window.DragonEngine.loadDragonSprites();
+  }
+
+  function draw(timestamp) {
     ctx.clearRect(0, 0, width, height);
 
     // Smooth lerp for mouse motion
-    mouse.x += (mouse.targetX - mouse.x) * 0.12;
-    mouse.y += (mouse.targetY - mouse.y) * 0.12;
+    mouse.x += (mouse.targetX - mouse.x) * 0.15;
+    mouse.y += (mouse.targetY - mouse.y) * 0.15;
 
-    const targetRect = targetObj.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-
-    // Bounds for the central compass annotation cluster
-    const centerObstacle = {
-      x: targetRect.left - containerRect.left + targetRect.width / 2,
-      y: targetRect.top - containerRect.top + targetRect.height / 2,
-      rx: targetRect.width / 2 + 30,
-      ry: targetRect.height / 2 + 20
-    };
+    // Update dragon physics
+    if (dragon && window.DragonEngine) {
+      const isIdle = mouse.x < 0;
+      window.DragonEngine.updateDragon(
+        dragon,
+        timestamp,
+        mouse.x,
+        mouse.y,
+        isIdle,
+        width / 2,
+        height / 2
+      );
+      window.DragonEngine.updateFire(dragon, timestamp);
+    }
 
     const colors = getThemeColors();
     ctx.font = getFont();
@@ -102,22 +121,7 @@
       while (x < width - 12) {
         let availableSpan = width - 12 - x;
 
-        // 1. Subtract central compass cluster obstacle
-        if (Math.abs(y - centerObstacle.y) < centerObstacle.ry) {
-          const obsLeft = centerObstacle.x - centerObstacle.rx;
-          const obsRight = centerObstacle.x + centerObstacle.rx;
-
-          if (x < obsRight && x + availableSpan > obsLeft) {
-            if (x < obsLeft) {
-              availableSpan = obsLeft - x;
-            } else {
-              x = obsRight;
-              availableSpan = width - 12 - x;
-            }
-          }
-        }
-
-        // 2. Subtract mouse orb obstacle
+        // Subtract mouse/dragon head orb obstacle
         if (mouse.x > 0 && Math.abs(y - mouse.y) < orbRadius) {
           const dy = Math.abs(y - mouse.y);
           const dx = Math.sqrt(orbRadius * orbRadius - dy * dy);
@@ -161,13 +165,11 @@
       }
     }
 
-    // Subtle magnetic aura under cursor
-    if (mouse.x > 0) {
-      ctx.globalAlpha = 0.05;
-      ctx.fillStyle = colors.brand;
-      ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, orbRadius, 0, Math.PI * 2);
-      ctx.fill();
+    // Render dragon and fire on top of text
+    if (dragon && window.DragonEngine && window.DragonEngine.isLoaded()) {
+      ctx.globalAlpha = 1.0;
+      window.DragonEngine.drawDragon(ctx, dragon);
+      window.DragonEngine.drawFire(ctx, dragon);
     }
 
     requestAnimationFrame(draw);
