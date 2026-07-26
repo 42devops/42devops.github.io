@@ -41,10 +41,123 @@ layout: default
     </div>
   </header>
 
-  <div class="post-content">
-    {{ content }}
+  <div class="post-layout">
+    <aside class="post-sidebar" id="post-sidebar">
+      <div class="toc-wrapper" id="toc-wrapper" style="display: none;">
+        <div class="toc-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/></svg>
+          <span>Contents</span>
+        </div>
+        <ul class="toc-list" id="toc-list"></ul>
+      </div>
+    </aside>
+
+    <div class="post-content" id="post-content">
+      {{ content }}
+    </div>
   </div>
 </article>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Generate Table of Contents (TOC)
+    const content = document.getElementById('post-content');
+    const tocWrapper = document.getElementById('toc-wrapper');
+    const tocList = document.getElementById('toc-list');
+
+    if (content && tocList && tocWrapper) {
+      const headings = content.querySelectorAll('h2, h3');
+      if (headings.length >= 2) {
+        tocWrapper.style.display = 'block';
+
+        headings.forEach((heading, idx) => {
+          if (!heading.id) {
+            heading.id = 'heading-' + idx;
+          }
+
+          const li = document.createElement('li');
+          li.className = 'toc-item ' + heading.tagName.toLowerCase();
+
+          const a = document.createElement('a');
+          a.href = '#' + heading.id;
+          a.textContent = heading.textContent.replace(/^#+\s*/, '');
+
+          a.addEventListener('click', function(e) {
+            e.preventDefault();
+            heading.scrollIntoView({ behavior: 'smooth' });
+            history.pushState(null, null, '#' + heading.id);
+          });
+
+          li.appendChild(a);
+          tocList.appendChild(li);
+        });
+
+        // IntersectionObserver for active heading highlight
+        const observerOptions = {
+          root: null,
+          rootMargin: '-80px 0px -60% 0px',
+          threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              const activeLink = tocList.querySelector(`a[href="#${id}"]`);
+              if (activeLink) {
+                tocList.querySelectorAll('a').forEach(link => link.classList.remove('active'));
+                activeLink.classList.add('active');
+              }
+            }
+          });
+        }, observerOptions);
+
+        headings.forEach(h => observer.observe(h));
+      }
+    }
+
+    // 2. Dynamic Inline Footnotes Popover
+    const footnotes = document.querySelectorAll('a.footnote, a[href^="#fn:"], sup[id^="fnref"] a');
+    footnotes.forEach(fnLink => {
+      fnLink.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+
+        const targetFn = document.querySelector(href);
+        if (targetFn) {
+          e.preventDefault();
+
+          // Existing popover toggle
+          let existing = this.parentNode.querySelector('.footnote-popover');
+          if (existing) {
+            existing.remove();
+            return;
+          }
+
+          // Close other popovers
+          document.querySelectorAll('.footnote-popover').forEach(p => p.remove());
+
+          const popover = document.createElement('div');
+          popover.className = 'footnote-popover';
+
+          const textContent = targetFn.innerText.replace(/↩|↩️/g, '').trim();
+          popover.innerHTML = `
+            <div style="font-size: 0.85rem; line-height: 1.5; color: var(--text-main);">${textContent}</div>
+            <button class="footnote-close-btn" aria-label="Close">&times;</button>
+          `;
+
+          popover.querySelector('.footnote-close-btn').addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            popover.remove();
+          });
+
+          this.parentNode.style.position = 'relative';
+          this.parentNode.appendChild(popover);
+        }
+      });
+    });
+  });
+</script>
 
 {% if site.related_posts.size > 0 %}
 <section style="margin-top: 3rem; margin-bottom: 2.5rem;">
