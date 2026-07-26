@@ -822,6 +822,17 @@ pre code {
   overflow: hidden;
 }
 
+/* Annotation Showcase Card Container */
+.ann-showcase-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.75rem 2rem 3.5rem 2rem;
+  margin: 2rem 0 3.5rem 0;
+  box-shadow: var(--shadow-sm);
+  overflow: visible;
+}
 /* Responsive Rules */
 @media (max-width: 640px) {
   .site { padding: 1.25rem 1rem 3rem 1rem; }
