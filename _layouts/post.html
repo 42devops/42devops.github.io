@@ -6,7 +6,7 @@ layout: default
   <header class="post-header">
     <div style="margin-bottom: 1rem;">
       <a href="/" style="text-decoration: none; color: var(--text-muted); font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.35rem;">
-        <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_back</span> Back to articles
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Back to articles
       </a>
     </div>
 
@@ -15,13 +15,13 @@ layout: default
     <div class="post-meta-bar">
       {% if page.date %}
       <time datetime="{{ page.date | date_to_xmlschema }}" style="font-family: var(--font-mono); font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem;">
-        <span class="material-symbols-outlined" style="font-size: 0.95rem; color: var(--text-light);">calendar_today</span> {{ page.date | date: "%b %d, %Y" }}
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg> {{ page.date | date: "%b %d, %Y" }}
       </time>
       {% endif %}
 
       {% if page.categories %}
       <div style="display: flex; gap: 0.4rem; align-items: center;">
-        <span class="material-symbols-outlined" style="font-size: 0.95rem; color: var(--text-light);">sell</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"/><path d="M7 7h.01"/></svg>
         {% for category in page.categories %}
           <span class="tag-badge">{{ category }}</span>
         {% endfor %}
@@ -30,7 +30,7 @@ layout: default
 
       <!-- Reading time estimate -->
       <span style="font-family: var(--font-mono); font-size: 0.825rem; color: var(--text-light); display: inline-flex; align-items: center; gap: 0.25rem;">
-        <span class="material-symbols-outlined" style="font-size: 0.95rem; color: var(--text-light);">schedule</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         {% assign words = content | number_of_words %}
         {% if words < 360 %}
           1 min read
