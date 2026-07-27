@@ -87,27 +87,4 @@ title: "42DevOps | Infrastructure & Engineering Notes"
   </div>
 </section>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const filterPills = document.querySelectorAll('.filter-pill');
-    const postCards = document.querySelectorAll('.post-card');
 
-    filterPills.forEach(pill => {
-      pill.addEventListener('click', function() {
-        filterPills.forEach(p => p.classList.remove('active'));
-        this.classList.add('active');
-
-        const filter = this.getAttribute('data-filter');
-
-        postCards.forEach(card => {
-          const categories = (card.getAttribute('data-categories') || '').split(/\s+/);
-          if (filter === 'all' || categories.includes(filter)) {
-            card.style.display = 'block';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
-    });
-  });
-</script>
