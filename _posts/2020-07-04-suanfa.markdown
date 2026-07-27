@@ -4,6 +4,7 @@ title: "宇宙超级压缩算法的传说"
 date: 2019-06-18 11:45:19 +0800
 categories: algorithm physics
 comments: true
+math: true
 ---
 
 话说有一天，外星人开着飞船降落在地球。地球人急忙问：大佬你来干什么？外星人说：我来考察，想带走你们星球上所有的书籍、电影和代码资料回去研究。
