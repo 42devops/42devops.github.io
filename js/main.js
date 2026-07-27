@@ -83,8 +83,15 @@ document.addEventListener('DOMContentLoaded', function() {
           const categories = (card.getAttribute('data-categories') || '').split(/\s+/);
           if (filter === 'all' || categories.includes(filter)) {
             card.style.display = 'block';
+            void card.offsetWidth;
+            card.classList.remove('hidden-card');
           } else {
-            card.style.display = 'none';
+            card.classList.add('hidden-card');
+            setTimeout(() => {
+              if (card.classList.contains('hidden-card')) {
+                card.style.display = 'none';
+              }
+            }, 150);
           }
         });
       });
