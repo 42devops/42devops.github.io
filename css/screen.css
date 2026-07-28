@@ -21,15 +21,16 @@
   --text-main: #141413;      /* Near black - primary text with warm olive undertone */
   --text-muted: #3d3d3a;     /* Dark warm - secondary text */
   --text-light: #6b6a64;     /* Stone - tertiary text & metadata */
+  --text-olive: #504e49;     /* Olive - for quotes and captions */
   
   --brand-primary: #1B365D;   /* Ink Blue - chromatic accent */
   --brand-hover: #2D5A8A;     /* Ink Light */
   --brand-light: #EEF2F7;     /* Brand tint */
   --tag-bg: #E4ECF5;          /* Solid tag swatch */
 
-  --shadow-sm: 0 1px 3px rgba(20, 20, 19, 0.04);
-  --shadow-md: 0 4px 12px rgba(20, 20, 19, 0.06);
-  --shadow-hover: 0 8px 20px rgba(20, 20, 19, 0.1);
+  --shadow-sm: 0 4px 12px rgba(20, 20, 19, 0.03);
+  --shadow-md: 0 4px 24px rgba(20, 20, 19, 0.05);
+  --shadow-hover: 0 8px 32px rgba(20, 20, 19, 0.08);
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -54,15 +55,16 @@
   --text-main: #f5f4ed;      /* Parchment main text */
   --text-muted: #b8b5a8;     /* Warm muted text */
   --text-light: #858276;     /* Warm stone text */
+  --text-olive: #a19f96;     /* Olive for dark mode */
 
   --brand-primary: #5b8ec9;  /* Light Ink Blue for dark background */
   --brand-hover: #81acd9;
-  --brand-light: rgba(91, 142, 201, 0.18);
-  --tag-bg: rgba(91, 142, 201, 0.15);
+  --brand-light: #2e3740;
+  --tag-bg: #2c343b;
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.25);
+  --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
 /* Global Reset & Base */
@@ -88,8 +90,8 @@ svg {
 body {
   background-color: var(--bg-page);
   color: var(--text-main);
-  font-family: var(--font-serif);
-  line-height: 1.65;
+  font-family: var(--font-sans);
+  line-height: 1.55;
   transition: background-color var(--transition-normal), color var(--transition-normal);
   min-height: 100vh;
   display: flex;
@@ -536,10 +538,10 @@ article.post-detail {
 
 /* Article Body Typography */
 .post-content {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: 1.05rem;
   color: var(--text-main);
-  line-height: 1.8;
+  line-height: 1.55;
 }
 
 .post-content h1,
@@ -571,12 +573,12 @@ article.post-detail {
 }
 
 .post-content blockquote {
-  border-left: 3px solid var(--brand-primary);
+  border-left: 2px solid var(--brand-primary);
   background: var(--bg-card);
   padding: 1rem 1.25rem;
   margin: 1.5rem 0;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  color: var(--text-muted);
+  color: var(--text-olive);
   font-family: var(--font-serif);
 }
 
@@ -608,7 +610,6 @@ article.post-detail {
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
   font-size: 0.875em;
-  border: 1px solid var(--border-subtle);
 }
 
 .code-wrapper {
