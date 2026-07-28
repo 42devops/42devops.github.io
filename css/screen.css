@@ -42,6 +42,31 @@
   --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Peras Art Theme - UI Concept Style */
+[data-theme="peras"] {
+  --bg-page: #F4F0EA;        /* Muted warm beige background */
+  --bg-card: #FFFFFF;        /* Pure white cards for float effect */
+  --bg-card-rgb: 255, 255, 255;
+  --bg-subtle: #EAE4D9;      /* Warm interactive elements */
+  --bg-code: #1A2235;        /* Deep navy for code */
+  --border-color: rgba(0, 0, 0, 0.05);
+  --border-subtle: rgba(0, 0, 0, 0.02);
+
+  --text-main: #1A2235;      /* Deep navy for text */
+  --text-muted: #64748B;     /* Cool slate for secondary */
+  --text-light: #94A3B8;     /* Light slate */
+  --text-olive: #475569;     /* Darker slate */
+
+  --brand-primary: #2563EB;  /* Vibrant interactive blue */
+  --brand-hover: #1D4ED8;
+  --brand-light: #EFF6FF;
+  --tag-bg: #F1F5F9;         /* Slate 100 for tags */
+
+  --shadow-sm: 0 4px 20px rgba(26, 34, 53, 0.04);
+  --shadow-md: 0 12px 30px rgba(26, 34, 53, 0.06);
+  --shadow-hover: 0 16px 40px rgba(26, 34, 53, 0.08);
+}
+
 [data-theme="dark"] {
   /* Dark Theme - Kami Dark Surface & Warm Charcoal */
   --bg-page: #141413;        /* Deep dark warm background */
