@@ -244,6 +244,14 @@ body {
   transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
 }
 
+.theme-toggle-btn svg {
+  transition: transform var(--transition-normal);
+}
+
+.theme-toggle-btn:active svg {
+  transform: rotate(45deg) scale(0.85);
+}
+
 .theme-toggle-btn:hover {
   color: var(--text-main);
   border-color: var(--brand-primary);
@@ -682,12 +690,21 @@ article.post-detail {
   font-family: var(--font-sans);
   font-size: 0.75rem;
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .copy-btn:hover {
   background: rgba(255, 255, 255, 0.25);
   color: #ffffff;
+}
+
+.copy-btn:active {
+  transform: scale(0.92);
+}
+
+.copy-btn.copied {
+  background: #10b981 !important;
+  color: #ffffff !important;
 }
 
 pre {

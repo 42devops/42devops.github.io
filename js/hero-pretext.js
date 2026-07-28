@@ -163,7 +163,14 @@
     window.DragonEngine.loadDragonSprites();
   }
 
+  let animationFrameId = null;
+  let isHeroVisible = true;
+
   function draw(timestamp) {
+    if (!isHeroVisible) {
+      animationFrameId = null;
+      return;
+    }
     ctx.clearRect(0, 0, width, height);
 
     // Smooth lerp for mouse motion
@@ -360,10 +367,43 @@
       window.DragonEngine.drawFire(ctx, dragon);
     }
 
-    requestAnimationFrame(draw);
+    animationFrameId = requestAnimationFrame(draw);
   }
 
-  window.addEventListener('resize', resize);
+  let resizeTimeout = null;
+  function handleResize() {
+    if (resizeTimeout) {
+      cancelAnimationFrame(resizeTimeout);
+    }
+    resizeTimeout = requestAnimationFrame(() => {
+      resize();
+      if (isHeroVisible && !animationFrameId) {
+        animationFrameId = requestAnimationFrame(draw);
+      }
+    });
+  }
+
+  window.addEventListener('resize', handleResize);
   resize();
-  requestAnimationFrame(draw);
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isHeroVisible = entry.isIntersecting;
+        if (isHeroVisible) {
+          if (!animationFrameId) {
+            animationFrameId = requestAnimationFrame(draw);
+          }
+        } else {
+          if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+          }
+        }
+      });
+    }, { threshold: 0.05 });
+    observer.observe(container);
+  } else {
+    animationFrameId = requestAnimationFrame(draw);
+  }
 })();

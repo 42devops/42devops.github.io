@@ -189,7 +189,15 @@
         });
       }
 
-      window.addEventListener('resize', layoutAndRender);
+      let resizeTimeout = null;
+      function handleResize() {
+        if (resizeTimeout) {
+          cancelAnimationFrame(resizeTimeout);
+        }
+        resizeTimeout = requestAnimationFrame(layoutAndRender);
+      }
+
+      window.addEventListener('resize', handleResize);
       layoutAndRender();
     });
   }

@@ -64,7 +64,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const codeText = block.querySelector('code') ? block.querySelector('code').innerText : block.innerText;
       navigator.clipboard.writeText(codeText).then(function() {
         copyBtn.textContent = 'Copied!';
-        setTimeout(function() { copyBtn.textContent = 'Copy'; }, 2000);
+        copyBtn.classList.add('copied');
+        setTimeout(function() {
+          copyBtn.textContent = 'Copy';
+          copyBtn.classList.remove('copied');
+        }, 2000);
       });
     });
 
