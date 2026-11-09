@@ -5,10 +5,6 @@ title: "42DevOps | Infrastructure & Engineering Notes"
 
 <section class="hero-banner">
   <canvas id="hero-pretext-canvas" class="hero-pretext-canvas"></canvas>
-  <div class="hero-content pretext-obstacle">
-    <h1 class="hero-title" style="margin-bottom: 0.75rem;">Infrastructure, Systems & Engineering</h1>
-    <p class="hero-subtitle" style="margin: 0 auto;">Notes on Kubernetes, DevOps, Cloud Infrastructure, and Software Architecture.</p>
-  </div>
 </section>
 <script src="/js/dragon.js?v={{ site.time | date: '%s' }}" defer></script>
 <script src="/js/hero-pretext.js?v={{ site.time | date: '%s' }}" defer></script>
@@ -26,37 +22,25 @@ title: "42DevOps | Infrastructure & Engineering Notes"
     {% endfor %}
   </div>
 
-  <div class="posts-grid" id="posts-container">
+  <div class="posts-simple-list" id="posts-container">
     {% for post in site.posts %}
-    <a href="{{ post.url }}" class="post-card {% if forloop.first %}featured-card{% endif %}" data-categories="{% if post.categories %}{{ post.categories | join: ' ' | downcase }}{% endif %}">
-      {% if forloop.first %}
-      <div class="featured-badge">Featured Article</div>
-      {% endif %}
-      <div class="post-card-header">
-        <h3 class="post-card-title">{{ post.title }}</h3>
-        <span class="post-card-meta">
-          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %d, %Y" }}</time>
-        </span>
+    <article class="post-list-item" data-categories="{% if post.categories %}{{ post.categories | join: ' ' | downcase }}{% endif %}">
+      <div class="post-list-main">
+        <time class="post-list-date" datetime="{{ post.date | date_to_xmlschema }}">
+          {{ post.date | date: "%Y-%m-%d" }}
+        </time>
+        <a href="{{ post.url }}" class="post-list-title">
+          {{ post.title }}
+        </a>
       </div>
-
-      {% if post.excerpt %}
-      <div class="post-card-snippet">
-        {% if forloop.first %}
-          {{ post.excerpt | strip_html | truncatewords: 42 }}
-        {% else %}
-          {{ post.excerpt | strip_html | truncatewords: 24 }}
-        {% endif %}
-      </div>
-      {% endif %}
-
       {% if post.categories %}
-      <div style="margin-top: 0.75rem; display: flex; gap: 0.35rem; flex-wrap: wrap;">
+      <div class="post-list-tags">
         {% for category in post.categories %}
         <span class="tag-badge">{{ category }}</span>
         {% endfor %}
       </div>
       {% endif %}
-    </a>
+    </article>
     {% endfor %}
   </div>
 </section>
@@ -66,24 +50,20 @@ title: "42DevOps | Infrastructure & Engineering Notes"
     <h2 class="section-title">Featured Projects</h2>
   </div>
 
-  <div class="projects-grid">
-    <a href="https://github.com/42devops/salt-kube-lite" target="_blank" rel="noopener" class="project-card">
-      <div>
-        <div class="project-name">
-          <span style="display: flex; align-items: center; gap: 0.35rem;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            Salt-Kube Lite
-          </span>
-          <span class="tag-badge">Kubernetes</span>
-        </div>
-        <p class="project-desc">
+  <div class="posts-simple-list">
+    <article class="post-list-item">
+      <div class="post-list-main">
+        <a href="https://github.com/42devops/salt-kube-lite" target="_blank" rel="noopener" class="post-list-title" style="font-weight: 600;">
+          salt-kube-lite
+        </a>
+        <span style="color: var(--text-muted); font-size: 0.925rem;">
           SaltStack quickstart to bootstrap a production-ready, highly available Kubernetes cluster.
-        </p>
+        </span>
       </div>
-      <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--brand-primary); font-weight: 600;">
-        View on GitHub &rarr;
+      <div class="post-list-tags">
+        <span class="tag-badge">Kubernetes</span>
       </div>
-    </a>
+    </article>
   </div>
 </section>
 

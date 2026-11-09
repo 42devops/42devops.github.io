@@ -231,41 +231,41 @@
     });
 
     for (let y = 18; y < height; y += lineHeight) {
+      // Collect and sort all obstacle intervals [left, right] on scanline y
+      const intervals = [];
+      for (let obs of circularObstacles) {
+        const dy = Math.abs(y - obs.y);
+        if (dy < obs.r) {
+          const dx = Math.sqrt(obs.r * obs.r - dy * dy);
+          intervals.push([obs.x - dx, obs.x + dx]);
+        }
+      }
+      for (let obs of domObstacles) {
+        if (y >= obs.top && y <= obs.bottom) {
+          intervals.push([obs.left, obs.right]);
+        }
+      }
+      intervals.sort((a, b) => a[0] - b[0]);
+
       let x = 12;
 
       while (x < width - 12) {
-        let availableSpan = width - 12 - x;
-
-        // 1. Subtract dragon circular segment obstacles intersecting line at y
-        for (let obs of circularObstacles) {
-          const dy = Math.abs(y - obs.y);
-          if (dy < obs.r) {
-            const dx = Math.sqrt(obs.r * obs.r - dy * dy);
-            const obsLeft = obs.x - dx;
-            const obsRight = obs.x + dx;
-
-            if (x < obsRight && x + availableSpan > obsLeft) {
-              if (x < obsLeft) {
-                availableSpan = obsLeft - x;
-              } else {
-                x = obsRight;
-                availableSpan = width - 12 - x;
-              }
-            }
+        // Skip any obstacles that cover or precede current x
+        let jumped = false;
+        for (let [obsLeft, obsRight] of intervals) {
+          if (obsRight <= x) continue;
+          if (obsLeft <= x) {
+            x = obsRight + 4;
+            jumped = true;
           }
         }
+        if (jumped && x >= width - 12) break;
 
-        // 2. Subtract DOM rectangular obstacles intersecting line at y
-        for (let obs of domObstacles) {
-          if (y >= obs.top && y <= obs.bottom) {
-            if (x < obs.right && x + availableSpan > obs.left) {
-              if (x < obs.left) {
-                availableSpan = obs.left - x;
-              } else {
-                x = obs.right;
-                availableSpan = width - 12 - x;
-              }
-            }
+        let availableSpan = width - 12 - x;
+        for (let [obsLeft] of intervals) {
+          if (obsLeft > x) {
+            availableSpan = Math.min(availableSpan, obsLeft - x);
+            break;
           }
         }
 
@@ -281,35 +281,10 @@
         }
 
         if (count === 0) {
-          // If phrase doesn't fit in gap, try CJK/character sub-chunk fitting for string items
-          const item = phraseStream[wordIdx];
-          if (typeof item === 'string') {
-            let subFit = "";
-            let subWidth = 0;
-            for (let char of item) {
-              const charWidth = ctx.measureText(char).width;
-              if (subWidth + charWidth <= availableSpan) {
-                subFit += char;
-                subWidth += charWidth;
-              } else {
-                break;
-              }
-            }
-
-            if (subFit.length > 0 && availableSpan > 20) {
-              ctx.font = getFont('text');
-              ctx.fillStyle = colors.text;
-              ctx.fillText(subFit, x, y);
-              x += subWidth + 8;
-            } else {
-              x += 16;
-            }
-          } else {
-            x += 16;
-          }
+          // Gap is narrower than current phrase: advance past gap without splitting or repeating
+          x += Math.max(16, availableSpan + 8);
           continue;
         }
-
         let renderX = x;
         for (let i = 0; i < count; i++) {
           const item = phraseStream[wordIdx];
