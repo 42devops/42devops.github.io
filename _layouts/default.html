@@ -41,30 +41,21 @@
       <header class="site-header">
         <div class="brand-wrapper">
           <a href="/" class="brand-logo">
-            <div class="brand-icon">
-              <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="30" height="30" rx="8" fill="var(--brand-primary)"/>
-                <path d="M8 20.5V15L14 9V20.5M14 15.5H17.5" stroke="var(--bg-page)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M18 10.5C19.5 10.5 21 11.6 21 13.2C21 15.6 18 17.5 18 20.5H22" stroke="var(--bg-page)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <span class="brand-text">
-              <span class="brand-title">42<span class="brand-highlight">DevOps</span></span>
-              <span class="brand-sub">Infra &amp; Engineering</span>
-            </span>
+            <span class="brand-title">42devops</span>
           </a>
         </div>
-        
-        <nav style="display: flex; align-items: center; gap: 1.25rem;">
+
+        <nav class="site-nav">
           <ul class="nav-links">
-            <li><a href="/">Blog</a></li>
-            <li><a href="/#projects">Projects</a></li>
-            <li><a href="https://github.com/42devops" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="/">articles</a></li>
+            <li><a href="/#projects">projects</a></li>
+            <li><a href="https://github.com/42devops" target="_blank" rel="noopener">github</a></li>
+            <li><a href="/atom.xml">rss</a></li>
           </ul>
 
           <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
-            <span id="theme-icon-container" style="display: inline-flex; align-items: center;"></span>
-            <span id="theme-label" style="font-size: 0.8rem; font-weight: 600;">Dark</span>
+            <span id="theme-icon-container" class="theme-icon"></span>
+            <span id="theme-label">dark</span>
           </button>
         </nav>
       </header>
@@ -75,14 +66,11 @@
 
       <footer class="site-footer">
         <div>
-          &copy; {{ "now" | date: "%Y" }} <strong>42DevOps</strong>. Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> &amp; GitHub Pages.
+          &copy; {{ "now" | date: "%Y" }} 42devops
         </div>
         <div class="footer-links">
-          <a href="/atom.xml" style="display: inline-flex; align-items: center; gap: 0.3rem;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
-            <span>RSS Feed</span>
-          </a>
-          <a href="https://42devops.com">42devops.com</a>
+          <a href="/atom.xml">RSS</a>
+          <a href="https://github.com/42devops" target="_blank" rel="noopener">GitHub</a>
         </div>
       </footer>
     </div>

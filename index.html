@@ -3,68 +3,45 @@ layout: default
 title: "42DevOps | Infrastructure & Engineering Notes"
 ---
 
-<section class="hero-banner">
-  <canvas id="hero-pretext-canvas" class="hero-pretext-canvas"></canvas>
-</section>
-<script src="/js/dragon.js?v={{ site.time | date: '%s' }}" defer></script>
-<script src="/js/hero-pretext.js?v={{ site.time | date: '%s' }}" defer></script>
-
-<section id="articles" style="margin-bottom: 3rem;">
+<section id="articles" class="home-section">
   <div class="section-header">
     <h2 class="section-title">Articles</h2>
-  </div>
-
-  <div class="filter-bar" id="category-filters">
-    <button class="filter-pill active" data-filter="all">All Posts</button>
-    {% assign categories = site.categories | sort %}
-    {% for category in categories %}
-    <button class="filter-pill" data-filter="{{ category[0] | downcase }}">{{ category[0] | capitalize }}</button>
-    {% endfor %}
+    <div class="filter-bar" id="category-filters">
+      <button class="filter-pill active" data-filter="all">all</button>
+      {% assign categories = site.categories | sort %}
+      {% for category in categories %}
+      <button class="filter-pill" data-filter="{{ category[0] | downcase }}">{{ category[0] | downcase }}</button>
+      {% endfor %}
+    </div>
   </div>
 
   <div class="posts-simple-list" id="posts-container">
     {% for post in site.posts %}
     <article class="post-list-item" data-categories="{% if post.categories %}{{ post.categories | join: ' ' | downcase }}{% endif %}">
-      <div class="post-list-main">
-        <time class="post-list-date" datetime="{{ post.date | date_to_xmlschema }}">
-          {{ post.date | date: "%Y-%m-%d" }}
-        </time>
-        <a href="{{ post.url }}" class="post-list-title">
-          {{ post.title }}
-        </a>
-      </div>
-      {% if post.categories %}
-      <div class="post-list-tags">
-        {% for category in post.categories %}
-        <span class="tag-badge">{{ category }}</span>
-        {% endfor %}
-      </div>
-      {% endif %}
+      <time class="post-list-date" datetime="{{ post.date | date_to_xmlschema }}">
+        {{ post.date | date: "%Y-%m-%d" }}
+      </time>
+      <a href="{{ post.url }}" class="post-list-title">
+        {{ post.title }}
+      </a>
     </article>
     {% endfor %}
   </div>
 </section>
 
-<section id="projects" style="margin-bottom: 3rem;">
+<section id="projects" class="home-section">
   <div class="section-header">
-    <h2 class="section-title">Featured Projects</h2>
+    <h2 class="section-title">Projects</h2>
   </div>
 
   <div class="posts-simple-list">
-    <article class="post-list-item">
-      <div class="post-list-main">
-        <a href="https://github.com/42devops/salt-kube-lite" target="_blank" rel="noopener" class="post-list-title" style="font-weight: 600;">
-          salt-kube-lite
-        </a>
-        <span style="color: var(--text-muted); font-size: 0.925rem;">
-          SaltStack quickstart to bootstrap a production-ready, highly available Kubernetes cluster.
-        </span>
-      </div>
-      <div class="post-list-tags">
-        <span class="tag-badge">Kubernetes</span>
-      </div>
+    <article class="post-list-item project-list-item">
+      <a href="https://github.com/42devops/salt-kube-lite" target="_blank" rel="noopener" class="post-list-title">
+        salt-kube-lite
+      </a>
+      <span class="project-inline-desc">
+        SaltStack quickstart to bootstrap a production-ready, highly available Kubernetes cluster.
+      </span>
     </article>
   </div>
 </section>
-
-

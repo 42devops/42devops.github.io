@@ -4,11 +4,8 @@ layout: default
 
 <article class="post-detail">
   <header class="post-header">
-    <div style="margin-bottom: 1rem;">
-      <a href="/" class="back-link">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-        <span>Back to articles</span>
-      </a>
+    <div class="back-nav">
+      <a href="/" class="back-link">&larr; index</a>
     </div>
 
     <h1 class="post-title">{{ page.title }}</h1>
@@ -20,24 +17,22 @@ layout: default
       </time>
       {% endif %}
 
-      <span class="post-meta-sep">&middot;</span>
+      <span class="post-meta-sep">/</span>
 
       <span class="post-meta-item">
         {% assign words = content | number_of_words %}
         {% if words < 360 %}
           1 min read
         {% else %}
-          {{ words | divided_by: 200 }} mins read
+          {{ words | divided_by: 200 }} min read
         {% endif %}
       </span>
 
-      {% if page.categories %}
+      {% if page.categories and page.categories.size > 0 %}
       <span class="post-meta-sep">&middot;</span>
-      <div style="display: flex; gap: 0.35rem; align-items: center;">
-        {% for category in page.categories %}
-          <span class="tag-badge">{{ category }}</span>
-        {% endfor %}
-      </div>
+      <span class="post-meta-item">
+        {% for category in page.categories %}#{{ category | downcase }}{% unless forloop.last %} {% endunless %}{% endfor %}
+      </span>
       {% endif %}
     </div>
   </header>
@@ -45,7 +40,7 @@ layout: default
   <aside class="post-sidebar" id="post-sidebar">
     <div class="toc-wrapper" id="toc-wrapper" style="display: none;">
       <div class="toc-header">
-        <span>On this page</span>
+        <span>Contents</span>
       </div>
       <ul class="toc-list" id="toc-list"></ul>
     </div>
@@ -160,27 +155,18 @@ layout: default
 {% if site.related_posts.size > 0 %}
 <section class="related-section">
   <div class="section-header">
-    <h2 class="section-title">Related Articles</h2>
+    <h2 class="section-title">Related</h2>
   </div>
 
   <div class="posts-simple-list">
     {% for post in site.related_posts limit:3 %}
     <article class="post-list-item">
-      <div class="post-list-main">
-        <time class="post-list-date" datetime="{{ post.date | date_to_xmlschema }}">
-          {{ post.date | date: "%Y-%m-%d" }}
-        </time>
-        <a href="{{ post.url }}" class="post-list-title">
-          {{ post.title }}
-        </a>
-      </div>
-      {% if post.categories %}
-      <div class="post-list-tags">
-        {% for cat in post.categories %}
-        <span class="tag-badge">{{ cat }}</span>
-        {% endfor %}
-      </div>
-      {% endif %}
+      <time class="post-list-date" datetime="{{ post.date | date_to_xmlschema }}">
+        {{ post.date | date: "%Y-%m-%d" }}
+      </time>
+      <a href="{{ post.url }}" class="post-list-title">
+        {{ post.title }}
+      </a>
     </article>
     {% endfor %}
   </div>
@@ -188,8 +174,10 @@ layout: default
 {% endif %}
 
 {% if page.comments %}
-<div style="margin-top: 2.5rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem;">
-  <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-main);">Comments</h3>
+<section class="comments-section">
+  <div class="section-header">
+    <h2 class="section-title">Comments</h2>
+  </div>
   <script src="https://utteranc.es/client.js"
           repo="42devops/42devops.github.io"
           issue-term="pathname"
@@ -198,5 +186,5 @@ layout: default
           crossorigin="anonymous"
           async>
   </script>
-</div>
+</section>
 {% endif %}
