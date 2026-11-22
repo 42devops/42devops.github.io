@@ -3,13 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#FAF9F6" id="theme-color-meta" />
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
     {% seo %}
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Shantell+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Shantell+Sans:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
 
     <!-- Stylesheets (with cache-busting timestamp) -->
     <link rel="stylesheet" href="/css/syntax.css?v={{ site.time | date: '%s' }}" type="text/css" />
@@ -26,51 +27,64 @@
     <!-- Theme Initialization Script (Avoid Flash of Unstyled Theme) -->
     <script>
       (function() {
-        const savedTheme = localStorage.getItem('42devops-theme');
-        if (savedTheme === 'dark' || savedTheme === 'light') {
-          document.documentElement.setAttribute('data-theme', savedTheme);
-        } else {
-          document.documentElement.setAttribute('data-theme', 'light');
+        var savedTheme = null;
+        try {
+          savedTheme = localStorage.getItem('42devops-theme');
+        } catch (e) {}
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = (savedTheme === 'dark' || savedTheme === 'light')
+          ? savedTheme
+          : (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.getElementById('theme-color-meta');
+        if (meta) {
+          meta.setAttribute('content', theme === 'dark' ? '#111110' : '#FAF9F6');
         }
       })();
     </script>
-
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
     <div class="site">
       <header class="site-header">
         <div class="brand-wrapper">
-          <a href="/" class="brand-logo">
-            <span class="brand-title">42devops</span>
+          <a href="/" class="brand-logo" aria-label="42devops home">
+            <span class="brand-title"><span class="brand-num">42</span><span class="brand-name">devops</span></span>
           </a>
         </div>
 
-        <nav class="site-nav">
+        <nav class="site-nav" aria-label="Primary">
           <ul class="nav-links">
-            <li><a href="/">articles</a></li>
+            <li><a href="/"{% if page.url == "/" or page.url == "/index.html" %} class="is-current" aria-current="page"{% endif %}>articles</a></li>
             <li><a href="/#projects">projects</a></li>
             <li><a href="https://github.com/42devops" target="_blank" rel="noopener">github</a></li>
             <li><a href="/atom.xml">rss</a></li>
           </ul>
 
-          <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
-            <span id="theme-icon-container" class="theme-icon"></span>
+          <span class="nav-divider" aria-hidden="true"></span>
+
+          <button class="theme-toggle-btn" id="theme-toggle" type="button" aria-label="Toggle color theme">
+            <span id="theme-icon-container" class="theme-icon" aria-hidden="true"></span>
             <span id="theme-label">dark</span>
           </button>
         </nav>
       </header>
 
-      <main>
+      <main id="main-content">
         {{ content }}
       </main>
 
       <footer class="site-footer">
-        <div>
-          &copy; {{ "now" | date: "%Y" }} 42devops
+        <div class="footer-colophon">
+          <span>&copy; {{ "now" | date: "%Y" }} 42devops</span>
+          <span class="footer-sep" aria-hidden="true">&middot;</span>
+          <span class="footer-note">0x2a</span>
         </div>
         <div class="footer-links">
-          <a href="/atom.xml">RSS</a>
-          <a href="https://github.com/42devops" target="_blank" rel="noopener">GitHub</a>
+          <a href="/atom.xml">rss</a>
+          <a href="https://github.com/42devops" target="_blank" rel="noopener">github</a>
+          <a href="#top" class="footer-top-link" id="back-to-top">top &uarr;</a>
         </div>
       </footer>
     </div>

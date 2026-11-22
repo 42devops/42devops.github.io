@@ -3,37 +3,53 @@ layout: default
 title: "42DevOps | Infrastructure & Engineering Notes"
 ---
 
+<section class="home-intro" aria-label="Introduction">
+  <p class="home-lead">Infrastructure, systems, and engineering notes.</p>
+  <p class="home-sub">A quiet archive on Kubernetes, algorithms, and tools built along the way.</p>
+</section>
+
 <section id="articles" class="home-section">
   <div class="section-header">
-    <h2 class="section-title">Articles</h2>
-    <div class="filter-bar" id="category-filters">
-      <button class="filter-pill active" data-filter="all">all</button>
+    <h2 class="section-title">
+      Articles
+      <span class="section-count" id="post-count">{{ site.posts.size }}</span>
+    </h2>
+    <div class="filter-bar" id="category-filters" role="group" aria-label="Filter articles by category">
+      <button type="button" class="filter-pill filter-pill-all active" data-filter="all" aria-pressed="true">all</button>
       {% assign categories = site.categories | sort %}
       {% for category in categories %}
-      <button class="filter-pill" data-filter="{{ category[0] | downcase }}">{{ category[0] | downcase }}</button>
+      <button type="button" class="filter-pill" data-filter="{{ category[0] | downcase }}" aria-pressed="false">{{ category[0] | downcase }}</button>
       {% endfor %}
     </div>
   </div>
 
-  <div class="posts-simple-list" id="posts-container">
-    {% for post in site.posts %}
-    <article class="post-list-item" data-categories="{% if post.categories %}{{ post.categories | join: ' ' | downcase }}{% endif %}">
-      <div class="post-list-main">
-        <time class="post-list-date" datetime="{{ post.date | date_to_xmlschema }}">
-          {{ post.date | date: "%Y-%m-%d" }}
-        </time>
-        <a href="{{ post.url }}" class="post-list-title">
-          {{ post.title }}
-        </a>
-      </div>
-      {% if post.categories %}
-      <div class="post-list-tags">
-        {% for category in post.categories %}
-        <span class="tag-badge">#{{ category | downcase }}</span>
+  <div class="posts-archive" id="posts-container">
+    {% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+    {% for year in posts_by_year %}
+    <div class="year-group" data-year="{{ year.name }}">
+      <div class="year-label" aria-label="Year {{ year.name }}">{{ year.name }}</div>
+      <div class="year-posts">
+        {% for post in year.items %}
+        <article class="post-list-item" data-categories="{% if post.categories %}{{ post.categories | join: ' ' | downcase }}{% endif %}">
+          <div class="post-list-main">
+            <time class="post-list-date" datetime="{{ post.date | date_to_xmlschema }}">
+              {{ post.date | date: "%m-%d" }}
+            </time>
+            <a href="{{ post.url }}" class="post-list-title">
+              {{ post.title }}
+            </a>
+          </div>
+          {% if post.categories and post.categories.size > 0 %}
+          <div class="post-list-tags">
+            {% for category in post.categories %}
+            <button type="button" class="tag-badge" data-filter-tag="{{ category | downcase }}">#{{ category | downcase }}</button>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </article>
         {% endfor %}
       </div>
-      {% endif %}
-    </article>
+    </div>
     {% endfor %}
   </div>
 </section>
@@ -43,19 +59,26 @@ title: "42DevOps | Infrastructure & Engineering Notes"
     <h2 class="section-title">Projects</h2>
   </div>
 
-  <div class="posts-simple-list">
-    <article class="post-list-item">
-      <div class="post-list-main">
-        <a href="https://github.com/42devops/salt-kube-lite" target="_blank" rel="noopener" class="post-list-title">
-          salt-kube-lite
-        </a>
-        <span class="project-inline-desc">
-          SaltStack quickstart to bootstrap a production-ready, highly available Kubernetes cluster.
-        </span>
+  <div class="projects-archive">
+    <div class="year-group project-group">
+      <div class="year-label">OSS</div>
+      <div class="year-posts">
+        <article class="project-list-item">
+          <div class="project-list-head">
+            <a href="https://github.com/42devops/salt-kube-lite" target="_blank" rel="noopener" class="project-list-title">
+              <span>salt-kube-lite</span>
+              <span class="external-arrow" aria-hidden="true">&#8599;</span>
+            </a>
+            <div class="post-list-tags">
+              <span class="tag-badge tag-badge-static">#kubernetes</span>
+              <span class="tag-badge tag-badge-static">#saltstack</span>
+            </div>
+          </div>
+          <p class="project-inline-desc">
+            SaltStack quickstart to bootstrap a production-ready, highly available Kubernetes cluster.
+          </p>
+        </article>
       </div>
-      <div class="post-list-tags">
-        <span class="tag-badge">#kubernetes</span>
-      </div>
-    </article>
+    </div>
   </div>
 </section>

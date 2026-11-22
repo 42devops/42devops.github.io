@@ -1,60 +1,138 @@
-/* Rouge / Pygments Syntax Highlighting - One Dark Style */
+/* Rouge / Pygments Syntax Highlighting — Dual Archival Light & Warm Obsidian Dark */
 
-.highlight { background: var(--bg-code, #0d1117); color: #c9d1d9; border-radius: var(--radius-md, 8px); }
-.highlight .c { color: #8b949e; font-style: italic; } /* Comment */
-.highlight .err { color: #f85149; background-color: rgba(248, 81, 73, 0.15); } /* Error */
-.highlight .k { color: #ff7b72; font-weight: 600; } /* Keyword */
-.highlight .o { color: #ff7b72; font-weight: 600; } /* Operator */
-.highlight .cm { color: #8b949e; font-style: italic; } /* Comment.Multiline */
-.highlight .cp { color: #8b949e; font-weight: 600; } /* Comment.Preproc */
-.highlight .c1 { color: #8b949e; font-style: italic; } /* Comment.Single */
-.highlight .cs { color: #8b949e; font-weight: 600; font-style: italic; } /* Comment.Special */
-.highlight .gd { color: #ffa198; background-color: rgba(218, 54, 51, 0.15); } /* Generic.Deleted */
-.highlight .ge { font-style: italic; } /* Generic.Emph */
-.highlight .gr { color: #ffa198; } /* Generic.Error */
-.highlight .gh { color: #79c0ff; font-weight: 600; } /* Generic.Heading */
-.highlight .gi { color: #7ee787; background-color: rgba(46, 160, 67, 0.15); } /* Generic.Inserted */
-.highlight .go { color: #8b949e; } /* Generic.Output */
-.highlight .gp { color: #8b949e; } /* Generic.Prompt */
-.highlight .gs { font-weight: bold; } /* Generic.Strong */
-.highlight .gu { color: #79c0ff; } /* Generic.Subheading */
-.highlight .gt { color: #f85149; } /* Generic.Traceback */
-.highlight .kc { color: #79c0ff; font-weight: 600; } /* Keyword.Constant */
-.highlight .kd { color: #ff7b72; font-weight: 600; } /* Keyword.Declaration */
-.highlight .kp { color: #ff7b72; font-weight: 600; } /* Keyword.Pseudo */
-.highlight .kr { color: #ff7b72; font-weight: 600; } /* Keyword.Reserved */
-.highlight .kt { color: #ffa657; font-weight: 600; } /* Keyword.Type */
-.highlight .m { color: #79c0ff; } /* Literal.Number */
-.highlight .s { color: #a5d6ff; } /* Literal.String */
-.highlight .na { color: #79c0ff; } /* Name.Attribute */
-.highlight .nb { color: #ffa657; } /* Name.Builtin */
-.highlight .nc { color: #ffa657; font-weight: 600; } /* Name.Class */
-.highlight .no { color: #79c0ff; font-weight: 600; } /* Name.Constant */
-.highlight .ni { color: #79c0ff; } /* Name.Entity */
-.highlight .ne { color: #f85149; font-weight: 600; } /* Name.Exception */
-.highlight .nf { color: #d2a8ff; font-weight: 600; } /* Name.Function */
-.highlight .nn { color: #ffa657; } /* Name.Namespace */
-.highlight .nt { color: #7ee787; } /* Name.Tag */
-.highlight .nv { color: #79c0ff; } /* Name.Variable */
-.highlight .ow { color: #ff7b72; font-weight: 600; } /* Operator.Word */
-.highlight .w { color: #6e7681; } /* Text.Whitespace */
-.highlight .mf { color: #79c0ff; } /* Literal.Number.Float */
-.highlight .mh { color: #79c0ff; } /* Literal.Number.Hex */
-.highlight .mi { color: #79c0ff; } /* Literal.Number.Integer */
-.highlight .mo { color: #79c0ff; } /* Literal.Number.Oct */
-.highlight .sb { color: #a5d6ff; } /* Literal.String.Backtick */
-.highlight .sc { color: #a5d6ff; } /* Literal.String.Char */
-.highlight .sd { color: #a5d6ff; } /* Literal.String.Doc */
-.highlight .s2 { color: #a5d6ff; } /* Literal.String.Double */
-.highlight .se { color: #79c0ff; } /* Literal.String.Escape */
-.highlight .sh { color: #a5d6ff; } /* Literal.String.Heredoc */
-.highlight .si { color: #a5d6ff; } /* Literal.String.Interpol */
-.highlight .sx { color: #a5d6ff; } /* Literal.String.Other */
-.highlight .sr { color: #7ee787; } /* Literal.String.Regex */
-.highlight .s1 { color: #a5d6ff; } /* Literal.String.Single */
-.highlight .ss { color: #a5d6ff; } /* Literal.String.Symbol */
-.highlight .bp { color: #ffa657; } /* Name.Builtin.Pseudo */
-.highlight .vc { color: #79c0ff; } /* Name.Variable.Class */
-.highlight .vg { color: #79c0ff; } /* Name.Variable.Global */
-.highlight .vi { color: #79c0ff; } /* Name.Variable.Instance */
-.highlight .il { color: #79c0ff; } /* Literal.Number.Integer.Long */
+.highlight {
+  background: var(--bg-code);
+  color: var(--code-text);
+  border-radius: 0;
+}
+
+/* Light Mode — Warm Archival Paper Palette */
+.highlight .c,
+.highlight .cm,
+.highlight .c1 { color: #706b62; font-style: italic; }
+.highlight .cp { color: #706b62; font-weight: 500; }
+.highlight .cs { color: #706b62; font-weight: 500; font-style: italic; }
+
+.highlight .err { color: #b91c1c; background-color: rgba(185, 28, 28, 0.1); }
+.highlight .k,
+.highlight .kd,
+.highlight .kp,
+.highlight .kr,
+.highlight .o,
+.highlight .ow { color: #a6382b; font-weight: 500; }
+.highlight .kc { color: #1d568c; font-weight: 500; }
+.highlight .kt { color: #915210; font-weight: 500; }
+
+.highlight .gd { color: #a6382b; background-color: rgba(166, 56, 43, 0.1); }
+.highlight .gi { color: #246848; background-color: rgba(36, 104, 72, 0.1); }
+.highlight .ge { font-style: italic; }
+.highlight .gs { font-weight: 600; }
+.highlight .gr,
+.highlight .gt { color: #b91c1c; }
+.highlight .gh,
+.highlight .gu { color: #1d568c; font-weight: 500; }
+.highlight .go,
+.highlight .gp { color: #706b62; }
+
+.highlight .m,
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo,
+.highlight .il { color: #1d568c; }
+
+.highlight .s,
+.highlight .sb,
+.highlight .sc,
+.highlight .sd,
+.highlight .s2,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .s1,
+.highlight .ss { color: #266542; }
+.highlight .se { color: #1d568c; }
+.highlight .sr { color: #246848; }
+
+.highlight .na,
+.highlight .no,
+.highlight .ni,
+.highlight .nv,
+.highlight .vc,
+.highlight .vg,
+.highlight .vi { color: #1d568c; }
+.highlight .no { font-weight: 500; }
+
+.highlight .nb,
+.highlight .nc,
+.highlight .nn,
+.highlight .bp { color: #915210; }
+.highlight .nc { font-weight: 500; }
+
+.highlight .ne { color: #b91c1c; font-weight: 500; }
+.highlight .nf { color: #5f3b8c; font-weight: 500; }
+.highlight .nt { color: #246848; }
+.highlight .w { color: #a39d93; }
+
+/* Dark Mode — Warm Obsidian One Dark Palette */
+[data-theme="dark"] .highlight .c,
+[data-theme="dark"] .highlight .cm,
+[data-theme="dark"] .highlight .c1,
+[data-theme="dark"] .highlight .cp,
+[data-theme="dark"] .highlight .cs,
+[data-theme="dark"] .highlight .go,
+[data-theme="dark"] .highlight .gp { color: #857f75; }
+
+[data-theme="dark"] .highlight .err { color: #f87171; background-color: rgba(248, 113, 113, 0.14); }
+[data-theme="dark"] .highlight .k,
+[data-theme="dark"] .highlight .kd,
+[data-theme="dark"] .highlight .kp,
+[data-theme="dark"] .highlight .kr,
+[data-theme="dark"] .highlight .o,
+[data-theme="dark"] .highlight .ow { color: #f28477; }
+[data-theme="dark"] .highlight .kc { color: #7dbbf5; }
+[data-theme="dark"] .highlight .kt { color: #f0ae68; }
+
+[data-theme="dark"] .highlight .gd { color: #fca5a5; background-color: rgba(248, 113, 113, 0.14); }
+[data-theme="dark"] .highlight .gi { color: #82db99; background-color: rgba(130, 219, 153, 0.12); }
+[data-theme="dark"] .highlight .gr,
+[data-theme="dark"] .highlight .gt,
+[data-theme="dark"] .highlight .ne { color: #f87171; }
+[data-theme="dark"] .highlight .gh,
+[data-theme="dark"] .highlight .gu { color: #7dbbf5; }
+
+[data-theme="dark"] .highlight .m,
+[data-theme="dark"] .highlight .mf,
+[data-theme="dark"] .highlight .mh,
+[data-theme="dark"] .highlight .mi,
+[data-theme="dark"] .highlight .mo,
+[data-theme="dark"] .highlight .il,
+[data-theme="dark"] .highlight .se,
+[data-theme="dark"] .highlight .na,
+[data-theme="dark"] .highlight .no,
+[data-theme="dark"] .highlight .ni,
+[data-theme="dark"] .highlight .nv,
+[data-theme="dark"] .highlight .vc,
+[data-theme="dark"] .highlight .vg,
+[data-theme="dark"] .highlight .vi { color: #7dbbf5; }
+
+[data-theme="dark"] .highlight .s,
+[data-theme="dark"] .highlight .sb,
+[data-theme="dark"] .highlight .sc,
+[data-theme="dark"] .highlight .sd,
+[data-theme="dark"] .highlight .s2,
+[data-theme="dark"] .highlight .sh,
+[data-theme="dark"] .highlight .si,
+[data-theme="dark"] .highlight .sx,
+[data-theme="dark"] .highlight .s1,
+[data-theme="dark"] .highlight .ss { color: #98c8f5; }
+[data-theme="dark"] .highlight .sr,
+[data-theme="dark"] .highlight .nt { color: #82db99; }
+
+[data-theme="dark"] .highlight .nb,
+[data-theme="dark"] .highlight .nc,
+[data-theme="dark"] .highlight .nn,
+[data-theme="dark"] .highlight .bp { color: #f0ae68; }
+
+[data-theme="dark"] .highlight .nf { color: #cfafff; }
+[data-theme="dark"] .highlight .w { color: #5c5850; }

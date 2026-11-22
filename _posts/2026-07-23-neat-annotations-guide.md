@@ -28,9 +28,9 @@ When you want to point arrows at code tokens, parameters, or specifications, giv
     <span style="margin-left: 0.5rem;">docs/specs/cli.md</span>
   </div>
 
-  <div style="margin-bottom: 4rem; line-height: 3.2em;">
-    - <span class="ann ann-amber ann-s" data-note="open task">[ ]</span>
-    <span class="ann ann-blue ann-se" data-note="stable ID">CLI-042</span> Add export command
+  <div style="margin-bottom: 4.5rem; line-height: 3.2em;">
+    - <span class="ann ann-amber ann-n" style="--ann-text-x: 12px;" data-note="open task">[ ]</span>
+    <span class="ann ann-blue ann-s" data-note="stable ID">CLI-042</span> Add export command
     <span class="ann ann-green ann-s" data-note="tag">#cli</span>
     <span class="ann ann-red ann-sw" data-note="priority">!high</span>
     <span class="ann ann-purple ann-nw" data-note="custom field">@blocked_by:CLI-041</span>
